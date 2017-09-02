@@ -1,44 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:id="@+id/common_activity_fragment_container"
     tools:context="com.jb.goscanner.function.main.MainActivity">
 
-    <cn.bingoogolapple.qrcode.zxing.ZXingView
-        android:id="@+id/zxingview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:qrcv_animTime="1000"
-        app:qrcv_barCodeTipText="将条码放入框内，即可自动扫描"
-        app:qrcv_barcodeRectHeight="140dp"
-        app:qrcv_borderColor="@android:color/white"
-        app:qrcv_borderSize="1dp"
-        app:qrcv_cornerColor="@color/colorPrimaryDark"
-        app:qrcv_cornerLength="20dp"
-        app:qrcv_cornerSize="3dp"
-        app:qrcv_customScanLineDrawable="@drawable/scan_icon_scanline"
-        app:qrcv_isBarcode="false"
-        app:qrcv_isCenterVertical="false"
-        app:qrcv_isOnlyDecodeScanBoxArea="false"
-        app:qrcv_isScanLineReverse="true"
-        app:qrcv_isShowDefaultGridScanLineDrawable="false"
-        app:qrcv_isShowDefaultScanLineDrawable="true"
-        app:qrcv_isShowTipBackground="true"
-        app:qrcv_isShowTipTextAsSingleLine="false"
-        app:qrcv_isTipTextBelowRect="false"
-        app:qrcv_maskColor="#33FFFFFF"
-        app:qrcv_qrCodeTipText="将二维码/条码放入框内，即可自动扫描"
-        app:qrcv_rectWidth="200dp"
-        app:qrcv_scanLineColor="@color/colorPrimaryDark"
-        app:qrcv_scanLineMargin="0dp"
-        app:qrcv_scanLineSize="0.5dp"
-        app:qrcv_tipTextColor="@android:color/white"
-        app:qrcv_tipTextSize="12sp"
-        app:qrcv_toolbarHeight="56dp"
-        app:qrcv_topOffset="90dp"
-        tools:layout_editor_absoluteY="8dp"
-        tools:layout_editor_absoluteX="8dp"></cn.bingoogolapple.qrcode.zxing.ZXingView>
+    <include layout="@layout/common_fragment_activity_layout" />
 
-</RelativeLayout>
+    <android.support.design.widget.BottomNavigationView
+        android:layout_gravity="bottom"
+        android:id="@+id/main_bottom_navigation"
+        android:background="@color/colorPrimary"
+        app:itemIconTint="@drawable/main_item_icon_tint"
+        app:itemTextColor="@drawable/main_item_icon_tint"
+        app:menu="@menu/main_menu_navigation"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"></android.support.design.widget.BottomNavigationView>
+
+</android.support.design.widget.CoordinatorLayout>

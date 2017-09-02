@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">GoScanner</string>
+    <string name="crate_qrcode">create</string>
+    <string name="record">record</string>
+    <string name="scan">scan</string>
 </resources>
