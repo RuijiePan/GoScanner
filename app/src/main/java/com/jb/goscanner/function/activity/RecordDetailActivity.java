@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -13,12 +14,18 @@ import com.jb.goscanner.R;
 import com.jb.goscanner.base.activity.BaseActivity;
 import com.jb.goscanner.function.adapter.DetailItemAdapter;
 import com.jb.goscanner.function.bean.ContactInfo;
+import com.jb.goscanner.function.bean.DetailItem;
+import com.jb.goscanner.function.sqlite.ContactDBUtils;
+
+import java.util.List;
 
 /**
  * Created by liuyue on 2017/9/3.
  */
 
 public class RecordDetailActivity extends BaseActivity implements View.OnClickListener{
+    private Context mContext;
+
     private ImageView mBackBtn;
     private ImageView mEditBtn;
     private ImageView mSaveBtn;
@@ -42,6 +49,11 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         super.setContentView(R.layout.activity_record_detail);
 
+        mContext = this;
+        Intent intent = getIntent();
+        mContactInfo = (ContactInfo)intent.getSerializableExtra(EXTRA_CONTACT_INFO);
+        mCurMode = intent.getIntExtra(EXTRA_MODE, MODE_UNEDITABLE);
+
         initView();
         init();
     }
@@ -53,6 +65,12 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mQRCodeSaveBtn = (ImageView)findViewById(R.id.qrcode_save_btn);
         mQRCodeShareBtn = (ImageView)findViewById(R.id.qrcode_share_btn);
 
+        if (mCurMode == MODE_EDITABLE) {
+            mSaveBtn.setVisibility(View.VISIBLE);
+        } else {
+            mEditBtn.setVisibility(View.VISIBLE);
+        }
+
         mBackBtn.setOnClickListener(this);
         mEditBtn.setOnClickListener(this);
         mSaveBtn.setOnClickListener(this);
@@ -63,9 +81,7 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void init() {
-        Intent intent = getIntent();
-        mContactInfo = (ContactInfo)intent.getSerializableExtra(EXTRA_CONTACT_INFO);
-        mCurMode = intent.getIntExtra(EXTRA_MODE, MODE_UNEDITABLE);
+
         if (mContactInfo == null) {
             mContactInfo = new ContactInfo();
         }
@@ -79,9 +95,40 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
+        int id = v.getId();
+        if (id == R.id.top_save_btn) {
+            List<DetailItem> items = mDetailItemAdapter.getData();
+            mContactInfo.setName(items.get(0).getValue());
+            mContactInfo.setPhoneNum(items.get(1).getValue());
+            mContactInfo.setSkype(items.get(2).getValue());
+            mContactInfo.setFacebook(items.get(3).getValue());
+            ContactDBUtils.getInstance(mContext).insertContact(mContactInfo);
 
+            switchMode();
+        } else if (id == R.id.top_edit_btn) {
+            switchMode();
+        } else if (id == R.id.activity_top_back) {
+            ActivityCompat.finishAfterTransition(RecordDetailActivity.this);
+        }
     }
 
+    private void switchMode() {
+        if (mCurMode == MODE_EDITABLE) {
+            switchMode(MODE_UNEDITABLE);
+            mSaveBtn.setVisibility(View.GONE);
+            mEditBtn.setVisibility(View.VISIBLE);
+        } else {
+            switchMode(MODE_EDITABLE);
+            mSaveBtn.setVisibility(View.VISIBLE);
+            mEditBtn.setVisibility(View.GONE);
+        }
+    }
+
+    private void switchMode(int mode) {
+        mCurMode = mode;
+        mDetailItemAdapter.setCurMode(mode);
+        mDetailItemAdapter.setData(mContactInfo.parseToDetailItems());
+    }
     /**
      * @param context
      * @param info

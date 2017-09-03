@@ -10,17 +10,17 @@ import java.util.ArrayList;
 public class ContactInfo implements Serializable {
     private String name;
     private String phoneNum;
-    private String wechat;
-    private String qq;
+    private String skype;
+    private String facebook;
 
     public ContactInfo() {
     }
 
-    public ContactInfo(String name, String phoneNum, String wechat, String qq) {
+    public ContactInfo(String name, String phoneNum, String skype, String facebook) {
         this.name = name;
         this.phoneNum = phoneNum;
-        this.wechat = wechat;
-        this.qq = qq;
+        this.skype = skype;
+        this.facebook = facebook;
     }
 
     public String getName() {
@@ -39,20 +39,20 @@ public class ContactInfo implements Serializable {
         this.phoneNum = phoneNum;
     }
 
-    public String getWechat() {
-        return wechat;
+    public String getSkype() {
+        return skype;
     }
 
-    public void setWechat(String wechat) {
-        this.wechat = wechat;
+    public void setSkype(String skype) {
+        this.skype = skype;
     }
 
-    public String getQq() {
-        return qq;
+    public String getFacebook() {
+        return facebook;
     }
 
-    public void setQq(String qq) {
-        this.qq = qq;
+    public void setFacebook(String facebook) {
+        this.facebook = facebook;
     }
 
     @Override
@@ -60,8 +60,8 @@ public class ContactInfo implements Serializable {
         return "ContactInfo{" +
                 "name='" + name + '\'' +
                 ", phoneNum='" + phoneNum + '\'' +
-                ", wechat='" + wechat + '\'' +
-                ", qq='" + qq + '\'' +
+                ", skype='" + skype + '\'' +
+                ", facebook='" + facebook + '\'' +
                 '}';
     }
 
@@ -69,8 +69,8 @@ public class ContactInfo implements Serializable {
         ArrayList<DetailItem> itemList = new ArrayList();
         itemList.add(new DetailItem("Name", name));
         itemList.add(new DetailItem("PhoneNum", phoneNum));
-        itemList.add(new DetailItem("Wechat", wechat));
-        itemList.add(new DetailItem("QQ", qq));
+        itemList.add(new DetailItem("Wechat", skype));
+        itemList.add(new DetailItem("QQ", facebook));
 
         return itemList;
     }

@@ -5,6 +5,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,11 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
     private List<DetailItem> mData;
     private int mCurMode;
     private ClipboardManager mClipboardManager;
+    private List<SwitchModeListener> mSwitchModeListeners = new ArrayList<>();
+
+    interface SwitchModeListener {
+        void onSwitchMode(int mode);
+    }
 
     public DetailItemAdapter(Context context, int mode)  {
         mContext = context;
@@ -69,6 +75,40 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
                 dealOnPaste(holder);
             }
         });
+
+        holder.mTagEditText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                mData.get(position).setValue(s.toString());
+            }
+        });
+
+        SwitchModeListener listener = new SwitchModeListener() {
+            @Override
+            public void onSwitchMode(int mode) {
+                if (mode == RecordDetailActivity.MODE_EDITABLE) {
+                    holder.mTagEditText.setVisibility(View.VISIBLE);
+                    holder.mPasteBtn.setVisibility(View.VISIBLE);
+                    holder.mTagUneditableText.setVisibility(View.GONE);
+                } else {
+                    holder.mTagEditText.setVisibility(View.GONE);
+                    holder.mPasteBtn.setVisibility(View.GONE);
+                    holder.mTagUneditableText.setVisibility(View.VISIBLE);
+                }
+            }
+        };
+        holder.setSwitchModeListener(listener);
+        mSwitchModeListeners.add(listener);
     }
 
     @Override
@@ -82,6 +122,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         private TextView mTag;
         private TextView mTagUneditableText;
         private EditText mTagEditText;
+        private SwitchModeListener mSwitchModeListener;
 
         public DetailItemViewHolder(View itemView) {
             super(itemView);
@@ -102,6 +143,10 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
                 mTagEditText.setVisibility(View.GONE);
                 mPasteBtn.setVisibility(View.GONE);
             }
+        }
+
+        public void setSwitchModeListener(SwitchModeListener switchModeListener) {
+            mSwitchModeListener = switchModeListener;
         }
     }
 
@@ -140,6 +185,9 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
 
     public void setCurMode(int curMode) {
         mCurMode = curMode;
+        for (SwitchModeListener listener : mSwitchModeListeners) {
+            listener.onSwitchMode(curMode);
+        }
     }
 
 }

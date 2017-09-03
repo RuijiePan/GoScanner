@@ -3,7 +3,8 @@
     android:id="@+id/top_layout"
     android:layout_width="match_parent"
     android:layout_height="55dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="#000000">
 
     <ImageView
         android:id="@+id/activity_top_back"
@@ -12,11 +13,13 @@
         android:layout_marginLeft="4dp"
         android:layout_marginRight="20dp"
         android:scaleType="center"
-        android:layout_gravity="center_vertical"/>
+        android:layout_gravity="center_vertical"
+        android:src="@drawable/icon_top_back"
+        />
 
     <TextView
         android:id="@+id/activiy_top_text"
-        android:layout_toRightOf="@+id/filter_store_top_back"
+        android:layout_toRightOf="@+id/activity_top_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -29,9 +32,10 @@
     <!--编辑icon-->
     <ImageView
         android:id="@+id/top_edit_btn"
+        android:src="@drawable/icon_edit_selector"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:layout_toLeftOf="@+id/filter_store_top_my_filter"
+        android:layout_toLeftOf="@+id/activiy_top_text"
         android:layout_marginLeft="4dp"
         android:scaleType="center"
         android:visibility="gone"
@@ -40,12 +44,14 @@
     <!--保存icon-->
     <ImageView
         android:id="@+id/top_save_btn"
+        android:src="@drawable/icon_save_selector"
+        android:layout_toLeftOf="@+id/activiy_top_text"
         android:layout_width="48dp"
         android:layout_height="48dp"
         android:layout_marginRight="4dp"
         android:scaleType="center"
-        android:visibility="gone"
         android:layout_gravity="center_vertical"
-        android:layout_alignParentRight="true"/>
+        android:layout_alignParentRight="true"
+        android:visibility="gone"/>
 
 </LinearLayout>
