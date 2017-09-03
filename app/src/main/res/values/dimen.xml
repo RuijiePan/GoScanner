@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="main_bottom_layout_height">55dp</dimen>
+    <dimen name="main_bootom_img_height">24dp</dimen>
+    <dimen name="main_bootom_scan_img_height">60dp</dimen>
+    <dimen name="main_bootom_scan_img_width">60dp</dimen>
+    <dimen name="main_bootom_scan_img_padding">15dp</dimen>
+    <dimen name="main_bottom_text_size">12sp</dimen>
+</resources>

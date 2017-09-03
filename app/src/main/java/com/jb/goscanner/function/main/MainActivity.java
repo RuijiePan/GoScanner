@@ -2,21 +2,25 @@ package com.jb.goscanner.function.main;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.BottomNavigationView;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.google.zxing.activity.CaptureActivity;
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.fragment.BaseFragmentActivity;
 import com.jb.goscanner.base.fragment.BaseFragmentManager;
-import com.jb.goscanner.function.create.CreateFragment;
+import com.jb.goscanner.function.generate.GenerateFragment;
 import com.jb.goscanner.function.record.RecordFragment;
 import com.jb.goscanner.util.log.Loger;
 
-public class MainActivity extends BaseFragmentActivity {
+public class MainActivity extends BaseFragmentActivity implements View.OnClickListener {
 
     public static final String LOG_TAG = "MainActivity";
-    private BottomNavigationView mBottomNavigationView;
     private MainFragmentManager mFragmentManager;
+    private LinearLayout mGenerateView;
+    private LinearLayout mCollectionView;
+    private ImageView mScanImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +39,9 @@ public class MainActivity extends BaseFragmentActivity {
 
 
     private void initView() {
-        mBottomNavigationView = (BottomNavigationView) findViewById(R.id.main_bottom_navigation);
+        mGenerateView = (LinearLayout) findViewById(R.id.main_bottom_generate_layout);
+        mCollectionView = (LinearLayout) findViewById(R.id.main_bottom_collection_layout);
+        mScanImg = (ImageView) findViewById(R.id.main_bottom_scan_btn);
     }
 
     private void initData() {
@@ -60,25 +66,26 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void setListener() {
-        mBottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_crate:
-                    Loger.w(LOG_TAG, "点击了 crate");
-                    startFragment(CreateFragment.class, null);
-                    break;
-                case R.id.menu_scan:
-                    Intent intent = new Intent(this, CaptureActivity.class);
-                    startActivity(intent);
-                    break;
-                case R.id.menu_record:
-                    Loger.w(LOG_TAG, "点击了 record");
-                    startFragment(RecordFragment.class, null);
-//                    ContactInfo info = new ContactInfo("test", "123", "wechat123", "qq123");
-//                    RecordDetailActivity.startRecordDetailActivity(MainActivity.this, info, RecordDetailActivity.MODE_EDITABLE);
-                    break;
-            }
-            //false的话不会点击会被取消
-            return true;
-        });
+        mGenerateView.setOnClickListener(this);
+        mCollectionView.setOnClickListener(this);
+        mScanImg.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.main_bottom_generate_layout:
+                startFragment(GenerateFragment.class, null);
+                Loger.w("ruijie", "click generate");
+                break;
+            case R.id.main_bottom_scan_btn:
+                Intent intent = new Intent(this, CaptureActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.main_bottom_collection_layout:
+                startFragment(RecordFragment.class, null);
+                Loger.w("ruijie", "click record");
+                break;
+        }
     }
 }

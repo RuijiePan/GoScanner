@@ -1,4 +1,4 @@
-package com.jb.goscanner.function.create;
+package com.jb.goscanner.function.generate;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -14,7 +14,7 @@ import com.jb.goscanner.base.fragment.BaseFragment;
  * Email : zquprj@gmail.com
  */
 
-public class CreateFragment extends BaseFragment {
+public class GenerateFragment extends BaseFragment {
 
     private View mRootView;
 

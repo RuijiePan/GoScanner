@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
 
     <color name="windowBackgroundColor">#FFFFFF</color>
+    <color name="main_bottom_layout_color">#ffffffdd</color>
 </resources>

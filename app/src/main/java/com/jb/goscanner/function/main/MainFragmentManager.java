@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import com.jb.goscanner.base.fragment.BaseFragment;
 import com.jb.goscanner.base.fragment.BaseFragmentManager;
 import com.jb.goscanner.base.fragment.FragmentManagerHelper;
-import com.jb.goscanner.function.create.CreateFragment;
+import com.jb.goscanner.function.generate.GenerateFragment;
 import com.jb.goscanner.function.record.RecordFragment;
 
 /**
@@ -16,22 +16,22 @@ import com.jb.goscanner.function.record.RecordFragment;
 
 public class MainFragmentManager extends BaseFragmentManager {
 
-    private CreateFragment mCreateFragment;
+    private GenerateFragment mGenerateFragment;
     private RecordFragment mRecordFragment;
 
     public MainFragmentManager(FragmentActivity act) {
         super(act);
-        mCreateFragment = new CreateFragment();
+        mGenerateFragment = new GenerateFragment();
         mRecordFragment = new RecordFragment();
     }
 
     @Override
     protected void startFragment(BaseFragment from, Class<? extends BaseFragment> cls, Bundle extras) {
-        if (CreateFragment.class.equals(cls)) {
-            if (mCreateFragment.isAdded()) {
-                FragmentManagerHelper.showFragment(this, mCreateFragment, extras, false);
+        if (GenerateFragment.class.equals(cls)) {
+            if (mGenerateFragment.isAdded()) {
+                FragmentManagerHelper.showFragment(this, mGenerateFragment, extras, false);
             } else {
-                FragmentManagerHelper.startFragment(this, mCreateFragment, extras, false);
+                FragmentManagerHelper.startFragment(this, mGenerateFragment, extras, false);
             }
         } else if (RecordFragment.class.equals(cls)) {
             if (mRecordFragment.isAdded()) {

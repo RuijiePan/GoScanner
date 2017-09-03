@@ -1,22 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.design.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/common_activity_fragment_container"
     tools:context="com.jb.goscanner.function.main.MainActivity">
 
     <include layout="@layout/common_fragment_activity_layout" />
 
-    <android.support.design.widget.BottomNavigationView
-        android:layout_gravity="bottom"
-        android:id="@+id/main_bottom_navigation"
-        android:background="@color/colorPrimary"
-        app:itemIconTint="@drawable/main_item_icon_tint"
-        app:itemTextColor="@drawable/main_item_icon_tint"
-        app:menu="@menu/main_menu_navigation"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"></android.support.design.widget.BottomNavigationView>
+    <include layout="@layout/activity_main_bottom_layout" />
 
 </android.support.design.widget.CoordinatorLayout>
