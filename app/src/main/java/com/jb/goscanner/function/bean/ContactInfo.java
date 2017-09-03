@@ -1,16 +1,27 @@
 package com.jb.goscanner.function.bean;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by liuyue on 2017/9/3.
  */
 
-public class ContactInfo {
+public class ContactInfo implements Serializable {
     private String name;
     private String phoneNum;
     private String wechat;
     private String qq;
+
+    public ContactInfo() {
+    }
+
+    public ContactInfo(String name, String phoneNum, String wechat, String qq) {
+        this.name = name;
+        this.phoneNum = phoneNum;
+        this.wechat = wechat;
+        this.qq = qq;
+    }
 
     public String getName() {
         return name;

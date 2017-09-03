@@ -56,6 +56,8 @@ public class MainActivity extends BaseFragmentActivity {
                 case R.id.menu_record:
                     Loger.w(LOG_TAG, "点击了 record");
                     startFragment(RecordFragment.class, null);
+//                    ContactInfo info = new ContactInfo("test", "123", "wechat123", "qq123");
+//                    RecordDetailActivity.startRecordDetailActivity(MainActivity.this, info, RecordDetailActivity.MODE_EDITABLE);
                     break;
             }
             //false的话不会点击会被取消

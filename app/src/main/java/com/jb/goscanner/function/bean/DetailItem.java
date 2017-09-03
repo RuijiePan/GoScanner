@@ -1,10 +1,12 @@
 package com.jb.goscanner.function.bean;
 
+import java.io.Serializable;
+
 /**
  * Created by liuyue on 2017/9/3.
  */
 
-public class DetailItem {
+public class DetailItem implements Serializable{
     private String tag;
     private String value;
 
