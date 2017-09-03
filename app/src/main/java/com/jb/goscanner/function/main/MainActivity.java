@@ -39,7 +39,24 @@ public class MainActivity extends BaseFragmentActivity {
     }
 
     private void initData() {
+        /*new CardInterface().getCardInfo("/storage/emulated/0/UCDownloads/128160980.png", new CardInterface.IUploadListener() {
+            @Override
+            public void uploadStart() {
 
+            }
+
+            @Override
+            public void uploadFailure(String error) {
+                Loger.w("ruijie", error);
+            }
+
+            @Override
+            public void uploadSuccess(CardInfo.ResultBean cardInfo) {
+                if (cardInfo != null) {
+                    Loger.w("ruijie", cardInfo.toString());
+                }
+            }
+        });*/
     }
 
     private void setListener() {
