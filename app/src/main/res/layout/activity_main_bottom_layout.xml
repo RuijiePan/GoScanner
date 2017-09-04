@@ -10,8 +10,6 @@
         android:layout_height="@dimen/main_bottom_layout_height"
         android:layout_alignParentBottom="true"
         android:background="@color/main_bottom_layout_color"
-        android:clipChildren="false"
-        android:clipToPadding="false"
         xmlns:android="http://schemas.android.com/apk/res/android">
 
         <LinearLayout
@@ -25,12 +23,13 @@
 
             <ImageView
                 android:id="@+id/main_bottom_generate_img"
-                android:src="@drawable/icon_qrcode"
+                android:src="@drawable/ic_home_generate"
                 android:layout_width="@dimen/main_bootom_img_height"
                 android:layout_height="@dimen/main_bootom_img_height" />
 
             <TextView
                 android:id="@+id/main_bottom_generate_text"
+                android:paddingTop="@dimen/main_bottom_img_text_padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/main_bottom_text_size"
@@ -52,12 +51,13 @@
 
             <ImageView
                 android:id="@+id/main_bottom_collection_img"
-                android:src="@drawable/icon_record"
+                android:src="@drawable/ic_home_collection"
                 android:layout_width="@dimen/main_bootom_img_height"
                 android:layout_height="@dimen/main_bootom_img_height" />
 
             <TextView
                 android:id="@+id/main_bottom_collection_text"
+                android:paddingTop="@dimen/main_bottom_img_text_padding"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/main_bottom_text_size"

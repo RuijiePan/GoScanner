@@ -7,6 +7,4 @@
 
     <include layout="@layout/common_fragment_activity_layout" />
 
-    <include layout="@layout/activity_main_bottom_layout" />
-
 </android.support.design.widget.CoordinatorLayout>

@@ -3,4 +3,10 @@
     <string name="crate_qrcode">create</string>
     <string name="record">record</string>
     <string name="scan">scan</string>
+    <string name="collection">Collection</string>
+    <string name="recording">Recording</string>
+    <string name="bussiness_card">Business Card</string>
+    <string name="web_page">Web page</string>
+    <string name="text_content">Text content</string>
+    <string name="other">Other</string>
 </resources>

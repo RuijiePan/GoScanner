@@ -1,9 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="main_bottom_layout_height">55dp</dimen>
+    <dimen name="main_bottom_layout_height">56dp</dimen>
     <dimen name="main_bootom_img_height">24dp</dimen>
-    <dimen name="main_bootom_scan_img_height">60dp</dimen>
-    <dimen name="main_bootom_scan_img_width">60dp</dimen>
+    <dimen name="main_bootom_scan_img_height">66dp</dimen>
+    <dimen name="main_bootom_scan_img_width">66dp</dimen>
     <dimen name="main_bootom_scan_img_padding">15dp</dimen>
-    <dimen name="main_bottom_text_size">12sp</dimen>
+    <dimen name="main_bottom_text_size">12dp</dimen>
+    <dimen name="main_bottom_img_text_padding">2dp</dimen>
+    <dimen name="main_margin">16dp</dimen>
+    <dimen name="main_margin_parent_top">54dp</dimen>
+    <dimen name="main_margin_collection_bottom">10dp</dimen>
+    <dimen name="main_person_icon_width">24dp</dimen>
+    <dimen name="main_person_icon_height">24dp</dimen>
+    <dimen name="main_collection_text_size">40dp</dimen>
+    <dimen name="main_recording_text_size">20dp</dimen>
+    <dimen name="main_big_text_height">90dp</dimen>
+    <dimen name="main_card_margin_top">30dp</dimen>
+    <dimen name="main_home_background_height">233dp</dimen>
+    <dimen name="main_card_padding_top_to_parent">172dp</dimen>
+    <dimen name="main_card_padding_bottom_to_tab">82dp</dimen>
+    <dimen name="main_card_img_height">88dp</dimen>
+    <dimen name="main_card_padding_text">8dp</dimen>
+    <dimen name="main_card_text_height">52dp</dimen>
+    <dimen name="main_card_text_size">16dp</dimen>
 </resources>

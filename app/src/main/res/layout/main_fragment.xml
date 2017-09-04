@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.jb.goscanner.function.main.MainActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/main_home_background_height"
+        android:background="@drawable/pic_home"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_margin_parent_top" />
+
+        <LinearLayout
+            android:id="@+id/main_top_big_text_layout"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/main_big_text_height"
+            android:paddingLeft="@dimen/main_margin"
+            android:paddingRight="@dimen/main_margin">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="@dimen/main_big_text_height"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/main_top_collection_text"
+                    android:text="@string/collection"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/main_collection_text_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/main_top_recording_text"
+                    android:text="@string/recording"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/main_recording_text_size"
+                    android:layout_marginTop="@dimen/main_margin_collection_bottom"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+
+            <ImageView
+                android:id="@+id/main_top_person_icon"
+                android:src="@drawable/ic_home_personal"
+                android:layout_gravity="center_vertical"
+                android:layout_width="@dimen/main_person_icon_width"
+                android:layout_height="@dimen/main_person_icon_width" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginStart="@dimen/main_margin"
+        android:layout_marginEnd="@dimen/main_margin"
+        android:layout_marginTop="@dimen/main_card_padding_top_to_parent"
+        android:layout_marginBottom="@dimen/main_card_padding_bottom_to_tab"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginBottom="@dimen/main_margin">
+
+            <LinearLayout
+                android:id="@+id/main_business_card"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/main_margin"
+                android:orientation="vertical"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/card_background">
+
+                <ImageView
+                    android:src="@drawable/ic_home_card"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/main_card_img_height" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/main_card_text_size"
+                    android:text="@string/bussiness_card" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_home_web"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/card_background">
+
+                <ImageView
+                    android:src="@drawable/ic_home_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/main_card_img_height" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/main_card_text_size"
+                    android:text="@string/web_page" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:id="@+id/main_text_content"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/main_margin"
+                android:orientation="vertical"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/card_background">
+
+                <ImageView
+                    android:src="@drawable/ic_home_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/main_card_img_height" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/main_card_text_size"
+                    android:text="@string/text_content" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/main_other"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:gravity="center_vertical|center_horizontal"
+                android:background="@drawable/card_background">
+
+                <ImageView
+                    android:src="@drawable/ic_home_others"
+                    android:layout_width="wrap_content"
+                    android:layout_height="@dimen/main_card_img_height" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/main_card_text_size"
+                    android:text="@string/other" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <com.jb.goscanner.function.main.view.BottomTab
+        android:id="@+id/main_bottom_tab"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"></com.jb.goscanner.function.main.view.BottomTab>
+
+</RelativeLayout>

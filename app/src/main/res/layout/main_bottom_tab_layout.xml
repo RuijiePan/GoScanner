@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout android:id="@+id/main_bottom_layout"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/main_bottom_layout_height"
+    android:layout_alignParentBottom="true"
+    android:background="@color/main_bottom_layout_color"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:id="@+id/main_bottom_generate_layout"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/main_bottom_layout_height"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/main_bottom_generate_img"
+            android:src="@drawable/ic_home_generate"
+            android:layout_width="@dimen/main_bootom_img_height"
+            android:layout_height="@dimen/main_bootom_img_height" />
+
+        <TextView
+            android:id="@+id/main_bottom_generate_text"
+            android:paddingTop="@dimen/main_bottom_img_text_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_bottom_text_size"
+            android:text="@string/generate" />
+    </LinearLayout>
+
+    <View
+        android:layout_width="@dimen/main_bootom_scan_img_width"
+        android:layout_height="wrap_content" />
+
+    <LinearLayout
+        android:id="@+id/main_bottom_collection_layout"
+        android:orientation="vertical"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_height="@dimen/main_bottom_layout_height"
+        android:gravity="center_horizontal|center_vertical"
+        android:layout_gravity="bottom">
+
+        <ImageView
+            android:id="@+id/main_bottom_collection_img"
+            android:src="@drawable/ic_home_collection"
+            android:layout_width="@dimen/main_bootom_img_height"
+            android:layout_height="@dimen/main_bootom_img_height" />
+
+        <TextView
+            android:id="@+id/main_bottom_collection_text"
+            android:paddingTop="@dimen/main_bottom_img_text_padding"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/main_bottom_text_size"
+            android:text="@string/collection" />
+    </LinearLayout>
+</LinearLayout>
+
+
