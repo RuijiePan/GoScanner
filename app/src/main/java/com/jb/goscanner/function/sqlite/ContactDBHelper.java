@@ -16,15 +16,13 @@ public class ContactDBHelper extends SQLiteOpenHelper {
 	static final String TABLE_NAME_CONTACT = "table_contact";
 	static final String CONTACT_ID = "id";
 	static final String CONTACT_NAME = "name";
-	static final String CONTACT_PHONE = "phone";
-	static final String CONTACT_SKYPE = "skype";
-	static final String CONTACT_FACEBOOK = "facebook";
+	static final String CONTACT_IMG = "img";
+	static final String CONTACT_REMARK = "remark";
 	private static final String SQL_PRAISE = "create table if not exists " + TABLE_NAME_CONTACT + " ("
 			+ CONTACT_ID + " INTEGER primary key autoincrement,"
-			+ CONTACT_NAME + " TEXT, "
-			+ CONTACT_PHONE + " TEXT, "
-			+ CONTACT_SKYPE + " TEXT, "
-			+ CONTACT_FACEBOOK + " TEXT " + ")";
+		+ CONTACT_NAME + " TEXT, "
+			+ CONTACT_IMG + " TEXT, "
+			+ CONTACT_REMARK + " TEXT " + ")";
 
 	public ContactDBHelper(Context context) {
 		super(context, DB_NAME, null, DB_VERSION);

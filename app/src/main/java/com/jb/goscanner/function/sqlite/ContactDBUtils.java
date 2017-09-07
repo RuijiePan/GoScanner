@@ -2,9 +2,11 @@ package com.jb.goscanner.function.sqlite;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.jb.goscanner.function.bean.ContactInfo;
+import com.jb.goscanner.function.bean.DetailItem;
 import com.jb.goscanner.util.log.Loger;
 
 /**
@@ -35,10 +37,10 @@ public class ContactDBUtils {
 	public void insertContact(ContactInfo info) {
 		openDB();
 		ContentValues cv = new ContentValues();
+		cv.put(ContactDBHelper.CONTACT_ID, info.getId());
 		cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
-		cv.put(ContactDBHelper.CONTACT_PHONE, info.getPhoneNum());
-		cv.put(ContactDBHelper.CONTACT_SKYPE, info.getSkype());
-		cv.put(ContactDBHelper.CONTACT_FACEBOOK, info.getFacebook());
+		cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
+		cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
 		db.insert(ContactDBHelper.TABLE_NAME_CONTACT, null, cv);
 	}
 
@@ -46,6 +48,31 @@ public class ContactDBUtils {
 		openDB();
 		String sql = "delete from " + ContactDBHelper.TABLE_NAME_CONTACT + " where " + ContactDBHelper.CONTACT_ID + " = " + id;
 		db.execSQL(sql);
+	}
+
+	public ContactInfo queryContactById(String id) {
+		try {
+			openDB();
+
+			String sql = "select * from " + ContactDBHelper.TABLE_NAME_CONTACT +" where " + ContactDBHelper.CONTACT_ID +"='" + id+"'";
+			Cursor cursor = db.rawQuery(sql, null);
+			ContactInfo info = new ContactInfo();
+			while (cursor.moveToNext()) {
+				info.setId(id);
+				info.setName(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_NAME)));
+				info.setImgUrl(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_IMG)));
+				info.setRemark(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_REMARK)));
+			}
+			ContactDetailDBUtils detail = ContactDetailDBUtils.getInstance(mContext);
+			info.setEmail(detail.queryContactByContactId(id, DetailItem.GROUP_EMAIL));
+			info.setPhone(detail.queryContactByContactId(id, DetailItem.GROUP_PHONE));
+			info.setWechat(detail.queryContactByContactId(id, DetailItem.GROUP_WECHAT));
+			info.setOther(detail.queryContactByContactId(id, DetailItem.GROUP_OTHER));
+			return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 	private void openDB() {
 		if (db == null) {
@@ -58,6 +85,5 @@ public class ContactDBUtils {
 			}
 		}
 	}
-
 
 }
