@@ -39,19 +39,12 @@ public class ContactDBUtils {
 
 	public void insertContact(ContactInfo info) {
 		openDB();
-//		ContactInfo existContact = this.queryContactById(info.getId());
-//		if (existContact == null) {
-			ContentValues cv = new ContentValues();
-			cv.put(ContactDBHelper.CONTACT_ID, info.getId());
-			cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
-			cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
-			cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
-			db.insert(ContactDBHelper.TABLE_NAME_CONTACT, null, cv);
-
-//		} else {
-//			Log.d(TAG, "insertContact: " + info.toString());
-//		}
-
+		ContentValues cv = new ContentValues();
+		cv.put(ContactDBHelper.CONTACT_ID, info.getId());
+		cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
+		cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
+		cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
+		db.insert(ContactDBHelper.TABLE_NAME_CONTACT, null, cv);
 	}
 
 	public void deleteContactById(int id) {

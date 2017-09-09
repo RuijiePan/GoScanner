@@ -110,7 +110,6 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         } else if (id == R.id.qrcode_create_btn) {
             try {
                 saveContent();
-                ContactInfo.toJson(mContactInfo);
                 Bitmap bitmap = BitmapUtils.create2DCode(ContactInfo.toJson(mContactInfo));//根据内容生成二维码
                 List<ContactInfo> retry = ContactDBUtils.getInstance(mContext).queryExistContact();
                 Log.d(TAG, "onClick: query all" + retry.size());
@@ -131,7 +130,7 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         }
         Log.d(TAG, "saveContent: " + contactId);
         mContactInfo.setId(contactId);
-        mContactInfo = mContactInfo.combineToContactInfo(items);
+        mContactInfo = ContactInfo.combineToContactInfo(items, contactId);
         mContactInfo.setId(contactId);
         ContactDBUtils.getInstance(mContext).insertContact(mContactInfo);
         for (int i = 1; i < items.size(); i++) {

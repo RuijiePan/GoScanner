@@ -150,24 +150,22 @@ public class ContactInfo implements Serializable {
         return items;
     }
 
-    // 用于将RecyclerView的内容组装成ContactInfo（带有Group）
-    public ContactInfo combineToContactInfo(List<DetailItem> items) {
+    // 用于将RecyclerView的内容组装成ContactInfo (items包含group类型，组装成的info是对象没有group类型）
+    public static ContactInfo combineToContactInfo(List<DetailItem> items, String contactId) {
         ContactInfo info = new ContactInfo();
-        int i = 0;
-        if (items.get(i).getContactId().equals(DetailItem.GROUP_HEAD)) {
+        if (items.get(0).getContactId().equals(DetailItem.GROUP_HEAD)) {
             DetailItem head = items.get(0);
-            info.setId(head.getId());
+            info.setId(contactId);
             info.setRemark(head.getGroup());
             info.setImgUrl(head.getValue());
             info.setName(head.getTag());
-            i++;
         }
         for (DetailItem item : items) {
             if (item.getValue() == null || item.getGroup().equals(DetailItem.GROUP_HEAD)) {
-                break;
+                continue;
             }
 
-            item.setContactId(this.id);
+            item.setContactId(contactId);
             if (item.getGroup().equals(DetailItem.GROUP_EMAIL)) {
                 info.setEmail(item);
             }
@@ -194,18 +192,29 @@ public class ContactInfo implements Serializable {
             jsonContact.put("remark", contact.getRemark());
             jsonContact.put("imgUrl", contact.getImgUrl());
 
+            JSONObject phone = new JSONObject();
             for (int i = 0; i < contact.getPhone().size(); i++) {
-                jsonContact.put("phone", contact.getPhone().get(i));
+                phone.put(contact.getPhone().get(i).getTag(), contact.getPhone().get(i).getValue());
             }
+            jsonContact.put("phone", phone);
+
+            JSONObject email = new JSONObject();
             for (int i = 0; i < contact.getEmail().size(); i++) {
-                jsonContact.put("phone", contact.getEmail().get(i));
+                phone.put(contact.getEmail().get(i).getTag(), contact.getEmail().get(i).getValue());
             }
+            jsonContact.put("email", email);
+
+            JSONObject wechat = new JSONObject();
             for (int i = 0; i < contact.getWechat().size(); i++) {
-                jsonContact.put("phone", contact.getWechat().get(i));
+                phone.put(contact.getWechat().get(i).getTag(), contact.getWechat().get(i).getValue());
             }
+            jsonContact.put("wechat", wechat);
+
+            JSONObject other = new JSONObject();
             for (int i = 0; i < contact.getOther().size(); i++) {
-                jsonContact.put("phone", contact.getOther().get(i));
+                phone.put(contact.getOther().get(i).getTag(), contact.getOther().get(i).getValue());
             }
+            jsonContact.put("other", other);
             jsonArray.put(jsonContact);
             jsonObject.put("contact", jsonArray);
         } catch (JSONException e) {
