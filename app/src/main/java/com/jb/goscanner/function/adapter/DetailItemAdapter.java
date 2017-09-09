@@ -40,6 +40,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
     private int TYPE_DETAIL = 1;
     private int TYPE_HEAD = 0;
     private int TYPE_GROUP = 2;
+    private int TYPE_FOOTER = 3;
 
     interface SwitchModeListener {
         void onSwitchMode(int mode);
@@ -64,15 +65,19 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         } else if (viewType == TYPE_GROUP) {
             View view = inflater.inflate(R.layout.detail_group, parent, false);
             return new DetailGroupViewHolder(view);
+        } else if (viewType == TYPE_FOOTER) {
+            View view = inflater.inflate(R.layout.detail_footer_btn, parent, false);
+            return new FooterViewHolder(view);
         }
         return null;
     }
 
     @Override
     public int getItemViewType(int position) {
-        String group = mData.get(position).getGroup();
         if (position == 0) {
             return TYPE_HEAD;
+        } else if (position == mData.size()) {
+            return TYPE_FOOTER;
         } else if (mData.get(position).getTag() != null) {
             return TYPE_DETAIL;
         } else {
@@ -91,7 +96,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
             if (mCurMode == RecordDetailActivity.MODE_EDITABLE) {
                 holder.mValueEditText.setText(item.getValue());
             } else {
-                holder.mTagUneditableText.setText(item.getValue());
+                holder.mValueUneditableText.setText(item.getValue());
             }
 
             holder.mPasteBtn.setOnClickListener(new View.OnClickListener() {
@@ -147,11 +152,11 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
                     if (mode == RecordDetailActivity.MODE_EDITABLE) {
                         holder.mValueEditText.setVisibility(View.VISIBLE);
                         holder.mPasteBtn.setVisibility(View.VISIBLE);
-                        holder.mTagUneditableText.setVisibility(View.GONE);
+                        holder.mValueUneditableText.setVisibility(View.GONE);
                     } else {
                         holder.mValueEditText.setVisibility(View.GONE);
                         holder.mPasteBtn.setVisibility(View.GONE);
-                        holder.mTagUneditableText.setVisibility(View.VISIBLE);
+                        holder.mValueUneditableText.setVisibility(View.VISIBLE);
                     }
                 }
             };
@@ -196,19 +201,31 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
                 }
             });
             holder.mGroupText.setText(mData.get(position).getGroup());
+        } else if (viewholder instanceof FooterViewHolder) {
+            FooterViewHolder holder = (FooterViewHolder)viewholder;
+            holder.mCreateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    /*saveContent();
+                    Bitmap bitmap = BitmapUtils.create2DCode(ContactInfo.toJson(mContactInfo));//根据内容生成二维码
+                    List<ContactInfo> retry = ContactDBUtils.getInstance(mContext).queryExistContact();
+                    Log.d(TAG, "onClick: query all" + retry.size());*/
+                }
+            });
         }
     }
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData.size() + 1;
     }
 
     class DetailItemViewHolder extends RecyclerView.ViewHolder{
         private ImageView mDeleteBtn;
         private Button mPasteBtn;
         private EditText mTagEditText;
-        private TextView mTagUneditableText;
+        private TextView mTagTextView;
+        private TextView mValueUneditableText;
         private EditText mValueEditText;
         private TextWatcher mTagWatcher;
         private TextWatcher mValueWatcher;
@@ -218,15 +235,18 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
             super(itemView);
             mDeleteBtn = (ImageView)itemView.findViewById(R.id.detail_delete_btn);
             mPasteBtn = (Button)itemView.findViewById(R.id.detail_paste_btn);
-            mTagEditText = (EditText)itemView.findViewById(R.id.detail_tag_textview);
-            mTagUneditableText = (TextView) itemView.findViewById(R.id.detail_uneditable_text);
+            mTagEditText = (EditText)itemView.findViewById(R.id.detail_tag_edittext);
+            mValueUneditableText = (TextView) itemView.findViewById(R.id.detail_uneditable_text);
             mValueEditText = (EditText) itemView.findViewById(R.id.detail_edit_text);
+            mTagTextView = (TextView)itemView.findViewById(R.id.detail_tag_textview);
 
+            mTagEditText.setBackground(null);
+            mValueEditText.setBackground(null);
             if (mCurMode == RecordDetailActivity.MODE_EDITABLE) { // 可编辑
                 mValueEditText.setVisibility(View.VISIBLE);
-                mTagUneditableText.setVisibility(View.GONE);
+                mValueUneditableText.setVisibility(View.GONE);
             } else { // 不可编辑
-                mTagUneditableText.setVisibility(View.VISIBLE);
+                mValueUneditableText.setVisibility(View.VISIBLE);
 
                 mValueEditText.setVisibility(View.GONE);
             }
@@ -288,13 +308,21 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         }
     }
 
+    class FooterViewHolder extends RecyclerView.ViewHolder{
+        private Button mCreateBtn;
+
+        public FooterViewHolder(View itemView) {
+            super(itemView);
+            mCreateBtn = (Button)itemView.findViewById(R.id.qrcode_create_btn);
+        }
+    }
 
     private void dealOnCopy(DetailItemViewHolder holder) {
         String text;
         if (mCurMode == RecordDetailActivity.MODE_EDITABLE) {
             text = holder.mValueEditText.getText().toString();
         } else {
-            text = holder.mTagUneditableText.getText().toString();
+            text = holder.mValueUneditableText.getText().toString();
         }
         ClipData clip = ClipData.newPlainText(DetailItemAdapter.class.getCanonicalName(), text);
         mClipboardManager.setPrimaryClip(clip);

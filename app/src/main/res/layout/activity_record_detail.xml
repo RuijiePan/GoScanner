@@ -15,19 +15,4 @@
         android:layout_below="@id/top_layout"
         android:overScrollMode="never">
     </android.support.v7.widget.RecyclerView>
-
-    <LinearLayout
-        android:layout_below="@+id/detail_recyclerview"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center_horizontal"
-        android:paddingTop="20dp">
-        <Button
-            android:id="@+id/qrcode_create_btn"
-            android:layout_width="144dp"
-            android:layout_height="48dp"
-            android:textColor="#FFFFFF"
-            android:text="create"
-            android:background="@color/colorPrimary"/>
-    </LinearLayout>
 </RelativeLayout>

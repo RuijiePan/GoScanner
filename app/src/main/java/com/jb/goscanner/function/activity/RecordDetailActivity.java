@@ -2,7 +2,6 @@ package com.jb.goscanner.function.activity;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -10,11 +9,8 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 
-import com.google.zxing.WriterException;
-import com.google.zxing.common.BitmapUtils;
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.activity.BaseActivity;
 import com.jb.goscanner.function.adapter.DetailItemAdapter;
@@ -36,7 +32,6 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
     private ImageView mBackBtn;
     private ImageView mEditBtn;
     private ImageView mSaveBtn;
-    private Button mQRCreateBtn;
 
     private RecyclerView mDetailRecyclerView;
     private DetailItemAdapter mDetailItemAdapter;
@@ -68,7 +63,6 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mBackBtn = (ImageView)findViewById(R.id.activity_top_back);
         mEditBtn = (ImageView)findViewById(R.id.top_edit_btn);
         mSaveBtn = (ImageView)findViewById(R.id.top_save_btn);
-        mQRCreateBtn = (Button)findViewById(R.id.qrcode_create_btn);
 
         if (mCurMode == MODE_EDITABLE) {
             mSaveBtn.setVisibility(View.VISIBLE);
@@ -79,7 +73,6 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mBackBtn.setOnClickListener(this);
         mEditBtn.setOnClickListener(this);
         mSaveBtn.setOnClickListener(this);
-        mQRCreateBtn.setOnClickListener(this);
         mDetailRecyclerView = (RecyclerView)findViewById(R.id.detail_recyclerview);
     }
 
@@ -107,15 +100,6 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
             switchMode();
         } else if (id == R.id.activity_top_back) {
             ActivityCompat.finishAfterTransition(RecordDetailActivity.this);
-        } else if (id == R.id.qrcode_create_btn) {
-            try {
-                saveContent();
-                Bitmap bitmap = BitmapUtils.create2DCode(ContactInfo.toJson(mContactInfo));//根据内容生成二维码
-                List<ContactInfo> retry = ContactDBUtils.getInstance(mContext).queryExistContact();
-                Log.d(TAG, "onClick: query all" + retry.size());
-            } catch (WriterException e) {
-                e.printStackTrace();
-            }
         }
     }
 
