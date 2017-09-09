@@ -19,7 +19,7 @@ public class ContactDetailDBHelper extends SQLiteOpenHelper {
 	static final String DETAIL_TAG = "detail_tag";
 	static final String DETAIL_VALUE = "detail_value";
 	static final String DETAIL_GROUP = "detail_group";
-	private static final String SQL_PRAISE = "create table if not exists " + TABLE_NAME_DETAIL + " ("
+	public static final String SQL_PRAISE = "create table if not exists " + TABLE_NAME_DETAIL + " ("
 			+ DETAIL_ID + " TEXT primary key, "
 			+ DETAIL_CONTACTID + " TEXT, "
 			+ DETAIL_TAG + " TEXT, "
@@ -32,7 +32,7 @@ public class ContactDetailDBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(SQL_PRAISE);
+		db.execSQL(this.SQL_PRAISE);
 		Log.d(TAG, "onCreate: create detail db");
 	}
 

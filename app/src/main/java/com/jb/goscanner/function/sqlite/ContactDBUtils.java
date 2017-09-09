@@ -9,6 +9,9 @@ import com.jb.goscanner.function.bean.ContactInfo;
 import com.jb.goscanner.function.bean.DetailItem;
 import com.jb.goscanner.util.log.Loger;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Created by liuyue on 2017/9/3.
  */
@@ -44,6 +47,7 @@ public class ContactDBUtils {
 			cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
 			cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
 			db.insert(ContactDBHelper.TABLE_NAME_CONTACT, null, cv);
+
 //		} else {
 //			Log.d(TAG, "insertContact: " + info.toString());
 //		}
@@ -68,6 +72,7 @@ public class ContactDBUtils {
 				info.setName(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_NAME)));
 				info.setImgUrl(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_IMG)));
 				info.setRemark(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_REMARK)));
+				break;
 			}
 			ContactDetailDBUtils detail = ContactDetailDBUtils.getInstance(mContext);
 			info.setEmail(detail.queryDetailByContactId(id, DetailItem.GROUP_EMAIL));
@@ -75,6 +80,35 @@ public class ContactDBUtils {
 			info.setWechat(detail.queryDetailByContactId(id, DetailItem.GROUP_WECHAT));
 			info.setOther(detail.queryDetailByContactId(id, DetailItem.GROUP_OTHER));
 			return info;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+
+	public List<ContactInfo> queryExistContact() {
+		try {
+			openDB();
+
+			String sql = "select * from " + ContactDBHelper.TABLE_NAME_CONTACT;
+			Cursor cursor = db.rawQuery(sql, null);
+			List<ContactInfo> contactInfoList = new ArrayList<>();
+			while (cursor.moveToNext()) {
+				ContactInfo info = new ContactInfo();
+				String id = cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_ID));
+				info.setId(id);
+				info.setName(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_NAME)));
+				info.setImgUrl(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_IMG)));
+				info.setRemark(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_REMARK)));
+				ContactDetailDBUtils detail = ContactDetailDBUtils.getInstance(mContext);
+				info.setEmail(detail.queryDetailByContactId(id, DetailItem.GROUP_EMAIL));
+				info.setPhone(detail.queryDetailByContactId(id, DetailItem.GROUP_PHONE));
+				info.setWechat(detail.queryDetailByContactId(id, DetailItem.GROUP_WECHAT));
+				info.setOther(detail.queryDetailByContactId(id, DetailItem.GROUP_OTHER));
+				contactInfoList.add(info);
+			}
+
+			return contactInfoList;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -30,7 +30,8 @@ public class ContactDBHelper extends SQLiteOpenHelper {
 
 	@Override
 	public void onCreate(SQLiteDatabase db) {
-		db.execSQL(SQL_PRAISE);
+		db.execSQL(this.SQL_PRAISE);
+		db.execSQL(ContactDetailDBHelper.SQL_PRAISE);
 		Log.d(TAG, "onCreate: cantact db");
 	}
 

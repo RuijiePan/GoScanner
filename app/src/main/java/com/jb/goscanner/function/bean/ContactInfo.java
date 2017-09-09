@@ -25,6 +25,8 @@ public class ContactInfo implements Serializable {
     private ArrayList<DetailItem> mWechat;
     private ArrayList<DetailItem> mOther;
 
+
+
     public ContactInfo() {
         mPhone = new ArrayList<>();
         mEmail = new ArrayList<>();
@@ -204,7 +206,7 @@ public class ContactInfo implements Serializable {
             for (int i = 0; i < contact.getOther().size(); i++) {
                 jsonContact.put("phone", contact.getOther().get(i));
             }
-            jsonArray.put(jsonObject);
+            jsonArray.put(jsonContact);
             jsonObject.put("contact", jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();

@@ -8,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -20,6 +21,7 @@ import com.jb.goscanner.function.adapter.DetailItemAdapter;
 import com.jb.goscanner.function.bean.ContactInfo;
 import com.jb.goscanner.function.bean.DetailItem;
 import com.jb.goscanner.function.sqlite.ContactDBUtils;
+import com.jb.goscanner.function.sqlite.ContactDetailDBUtils;
 
 import java.util.List;
 
@@ -28,6 +30,7 @@ import java.util.List;
  */
 
 public class RecordDetailActivity extends BaseActivity implements View.OnClickListener{
+    private static final String TAG = "RecordDetailActivity";
     private Context mContext;
 
     private ImageView mBackBtn;
@@ -105,12 +108,12 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         } else if (id == R.id.activity_top_back) {
             ActivityCompat.finishAfterTransition(RecordDetailActivity.this);
         } else if (id == R.id.qrcode_create_btn) {
-            saveContent();
-            String content = null;
             try {
                 saveContent();
                 ContactInfo.toJson(mContactInfo);
                 Bitmap bitmap = BitmapUtils.create2DCode(ContactInfo.toJson(mContactInfo));//根据内容生成二维码
+                List<ContactInfo> retry = ContactDBUtils.getInstance(mContext).queryExistContact();
+                Log.d(TAG, "onClick: query all" + retry.size());
             } catch (WriterException e) {
                 e.printStackTrace();
             }
@@ -123,13 +126,17 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
 
         }*/
         String contactId = mContactInfo.getId();
-        /*if (contactId == null) {
+        if (contactId == null) {
             contactId = System.currentTimeMillis() + "";
-        }*/
+        }
+        Log.d(TAG, "saveContent: " + contactId);
         mContactInfo.setId(contactId);
         mContactInfo = mContactInfo.combineToContactInfo(items);
         mContactInfo.setId(contactId);
         ContactDBUtils.getInstance(mContext).insertContact(mContactInfo);
+        for (int i = 1; i < items.size(); i++) {
+            ContactDetailDBUtils.getInstance(mContext).insertDetail(items.get(i));
+        }
     }
     private void switchMode() {
         if (mCurMode == MODE_EDITABLE) {

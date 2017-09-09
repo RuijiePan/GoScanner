@@ -56,7 +56,7 @@ public class ContactDetailDBUtils {
 		try {
 			openDB();
 
-			String sql = "select * from " + ContactDBHelper.TABLE_NAME_CONTACT +" where " + ContactDetailDBHelper.DETAIL_CONTACTID +"='" + id +"' and " + ContactDetailDBHelper.DETAIL_GROUP +"='" + group + "'";
+			String sql = "select * from " + ContactDetailDBHelper.TABLE_NAME_DETAIL +" where " + ContactDetailDBHelper.DETAIL_CONTACTID +"='" + id +"' and " + ContactDetailDBHelper.DETAIL_GROUP +"='" + group + "'";
 			Cursor cursor = db.rawQuery(sql, null);
 			ArrayList list = new ArrayList<DetailItem>();
 			while (cursor.moveToNext()) {
