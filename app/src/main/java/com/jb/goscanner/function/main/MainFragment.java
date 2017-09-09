@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import com.google.zxing.activity.CaptureActivity;
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.fragment.BaseFragment;
+import com.jb.goscanner.function.activity.RecordDetailActivity;
+import com.jb.goscanner.function.bean.ContactInfo;
 import com.jb.goscanner.function.main.view.BottomTab;
 import com.jb.goscanner.util.log.Loger;
 
@@ -84,6 +86,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.main_business_card:
+                RecordDetailActivity.startRecordDetailActivity(mContext, new ContactInfo(), RecordDetailActivity.MODE_EDITABLE);
                 break;
             case R.id.main_home_web:
                 break;

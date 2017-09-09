@@ -52,7 +52,7 @@ public class ContactDetailDBUtils {
 		db.execSQL(sql);
 	}
 
-	public ArrayList<DetailItem> queryContactByContactId(String id, String group) {
+	public ArrayList<DetailItem> queryDetailByContactId(String id, String group) {
 		try {
 			openDB();
 

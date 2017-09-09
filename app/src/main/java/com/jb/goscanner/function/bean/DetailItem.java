@@ -72,4 +72,13 @@ public class DetailItem implements Serializable{
     public void setContactId(String contactId) {
         this.contactId = contactId;
     }
+
+    @Override
+    public String toString() {
+        return "DetailItem{" +
+                "tag='" + tag + '\'' +
+                ", value='" + value + '\'' +
+                ", group='" + group + '\'' +
+                '}';
+    }
 }

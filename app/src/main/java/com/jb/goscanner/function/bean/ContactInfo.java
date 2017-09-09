@@ -1,5 +1,11 @@
 package com.jb.goscanner.function.bean;
 
+import android.util.Log;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,6 +15,7 @@ import java.util.List;
  */
 
 public class ContactInfo implements Serializable {
+    private static final String TAG = "ContactInfo";
     private String id;
     private String name;
     private String remark;
@@ -17,8 +24,6 @@ public class ContactInfo implements Serializable {
     private ArrayList<DetailItem> mEmail;
     private ArrayList<DetailItem> mWechat;
     private ArrayList<DetailItem> mOther;
-
-
 
     public ContactInfo() {
         mPhone = new ArrayList<>();
@@ -120,7 +125,7 @@ public class ContactInfo implements Serializable {
     }
 
     // 将ContactInfo解析成ArrayList<DetailItem>用于RecyclerView展示
-    public static ArrayList<DetailItem> parseToDetailItem(ContactInfo info) {
+    public static ArrayList<DetailItem> parseToDetailItem(ContactInfo info) { // 带有group
         ArrayList<DetailItem> items = new ArrayList<>();
 
         // 注意头部内容的放置
@@ -143,7 +148,7 @@ public class ContactInfo implements Serializable {
         return items;
     }
 
-    // 用于将RecyclerView的内容组装成ContactInfo
+    // 用于将RecyclerView的内容组装成ContactInfo（带有Group）
     public ContactInfo combineToContactInfo(List<DetailItem> items) {
         ContactInfo info = new ContactInfo();
         int i = 0;
@@ -175,6 +180,51 @@ public class ContactInfo implements Serializable {
             }
         }
         return info;
+    }
+
+    public static String toJson(ContactInfo contact) {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        try {
+            JSONObject jsonContact = new JSONObject();
+            jsonContact.put("name", contact.getName());
+            jsonContact.put("remark", contact.getRemark());
+            jsonContact.put("imgUrl", contact.getImgUrl());
+
+            for (int i = 0; i < contact.getPhone().size(); i++) {
+                jsonContact.put("phone", contact.getPhone().get(i));
+            }
+            for (int i = 0; i < contact.getEmail().size(); i++) {
+                jsonContact.put("phone", contact.getEmail().get(i));
+            }
+            for (int i = 0; i < contact.getWechat().size(); i++) {
+                jsonContact.put("phone", contact.getWechat().get(i));
+            }
+            for (int i = 0; i < contact.getOther().size(); i++) {
+                jsonContact.put("phone", contact.getOther().get(i));
+            }
+            jsonArray.put(jsonObject);
+            jsonObject.put("contact", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "toJson: " + jsonObject.toString());
+        return jsonObject.toString();
+    }
+
+    @Override
+    public String toString() {
+        return "ContactInfo{" +
+                "id='" + id + '\'' +
+                ", name='" + name + '\'' +
+                ", remark='" + remark + '\'' +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", mPhone=" + mPhone +
+                ", mEmail=" + mEmail +
+                ", mWechat=" + mWechat +
+                ", mOther=" + mOther +
+                '}';
     }
 }
 

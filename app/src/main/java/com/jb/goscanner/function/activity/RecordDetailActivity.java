@@ -2,14 +2,18 @@ package com.jb.goscanner.function.activity;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitmapUtils;
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.activity.BaseActivity;
 import com.jb.goscanner.function.adapter.DetailItemAdapter;
@@ -29,8 +33,7 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
     private ImageView mBackBtn;
     private ImageView mEditBtn;
     private ImageView mSaveBtn;
-    private ImageView mQRCodeSaveBtn;
-    private ImageView mQRCodeShareBtn;
+    private Button mQRCreateBtn;
 
     private RecyclerView mDetailRecyclerView;
     private DetailItemAdapter mDetailItemAdapter;
@@ -52,7 +55,7 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mContext = this;
         Intent intent = getIntent();
         mContactInfo = (ContactInfo)intent.getSerializableExtra(EXTRA_CONTACT_INFO);
-        mCurMode = intent.getIntExtra(EXTRA_MODE, MODE_UNEDITABLE);
+        mCurMode = intent.getIntExtra(EXTRA_MODE, MODE_EDITABLE);
 
         initView();
         init();
@@ -62,8 +65,7 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mBackBtn = (ImageView)findViewById(R.id.activity_top_back);
         mEditBtn = (ImageView)findViewById(R.id.top_edit_btn);
         mSaveBtn = (ImageView)findViewById(R.id.top_save_btn);
-        mQRCodeSaveBtn = (ImageView)findViewById(R.id.qrcode_save_btn);
-        mQRCodeShareBtn = (ImageView)findViewById(R.id.qrcode_share_btn);
+        mQRCreateBtn = (Button)findViewById(R.id.qrcode_create_btn);
 
         if (mCurMode == MODE_EDITABLE) {
             mSaveBtn.setVisibility(View.VISIBLE);
@@ -74,9 +76,7 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mBackBtn.setOnClickListener(this);
         mEditBtn.setOnClickListener(this);
         mSaveBtn.setOnClickListener(this);
-        mQRCodeSaveBtn.setOnClickListener(this);
-        mQRCodeShareBtn.setOnClickListener(this);
-
+        mQRCreateBtn.setOnClickListener(this);
         mDetailRecyclerView = (RecyclerView)findViewById(R.id.detail_recyclerview);
     }
 
@@ -90,28 +90,47 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mDetailRecyclerView.setLayoutManager(layoutManager);
         mDetailItemAdapter = new DetailItemAdapter(this, mCurMode);
         mDetailRecyclerView.setAdapter(mDetailItemAdapter);
-        mDetailItemAdapter.setData(mContactInfo.parseToDetailItems());
+        List items = mContactInfo.parseToDetailItem(mContactInfo);
+        mDetailItemAdapter.setData(items);
     }
 
     @Override
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.top_save_btn) {
-            List<DetailItem> items = mDetailItemAdapter.getData();
-            mContactInfo.setName(items.get(0).getValue());
-            mContactInfo.setPhoneNum(items.get(1).getValue());
-            mContactInfo.setSkype(items.get(2).getValue());
-            mContactInfo.setFacebook(items.get(3).getValue());
-            ContactDBUtils.getInstance(mContext).insertContact(mContactInfo);
-
+            saveContent();
             switchMode();
         } else if (id == R.id.top_edit_btn) {
             switchMode();
         } else if (id == R.id.activity_top_back) {
             ActivityCompat.finishAfterTransition(RecordDetailActivity.this);
+        } else if (id == R.id.qrcode_create_btn) {
+            saveContent();
+            String content = null;
+            try {
+                saveContent();
+                ContactInfo.toJson(mContactInfo);
+                Bitmap bitmap = BitmapUtils.create2DCode(ContactInfo.toJson(mContactInfo));//根据内容生成二维码
+            } catch (WriterException e) {
+                e.printStackTrace();
+            }
         }
     }
 
+    private void saveContent() {
+        List<DetailItem> items = mDetailItemAdapter.getData();
+        /*for (DetailItem item : items) {
+
+        }*/
+        String contactId = mContactInfo.getId();
+        /*if (contactId == null) {
+            contactId = System.currentTimeMillis() + "";
+        }*/
+        mContactInfo.setId(contactId);
+        mContactInfo = mContactInfo.combineToContactInfo(items);
+        mContactInfo.setId(contactId);
+        ContactDBUtils.getInstance(mContext).insertContact(mContactInfo);
+    }
     private void switchMode() {
         if (mCurMode == MODE_EDITABLE) {
             switchMode(MODE_UNEDITABLE);
@@ -125,9 +144,9 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
     }
 
     private void switchMode(int mode) {
-        mCurMode = mode;
-        mDetailItemAdapter.setCurMode(mode);
-        mDetailItemAdapter.setData(mContactInfo.parseToDetailItems());
+//        mCurMode = mode;
+//        mDetailItemAdapter.setCurMode(mode);
+//        mDetailItemAdapter.setData(mContactInfo.parseToDetailItem(new ContactInfo()));
     }
     /**
      * @param context

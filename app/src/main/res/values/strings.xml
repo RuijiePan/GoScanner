@@ -9,4 +9,5 @@
     <string name="web_page">Web page</string>
     <string name="text_content">Text content</string>
     <string name="other">Other</string>
+    <string name="generate">generate</string>
 </resources>

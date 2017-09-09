@@ -36,12 +36,18 @@ public class ContactDBUtils {
 
 	public void insertContact(ContactInfo info) {
 		openDB();
-		ContentValues cv = new ContentValues();
-		cv.put(ContactDBHelper.CONTACT_ID, info.getId());
-		cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
-		cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
-		cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
-		db.insert(ContactDBHelper.TABLE_NAME_CONTACT, null, cv);
+//		ContactInfo existContact = this.queryContactById(info.getId());
+//		if (existContact == null) {
+			ContentValues cv = new ContentValues();
+			cv.put(ContactDBHelper.CONTACT_ID, info.getId());
+			cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
+			cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
+			cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
+			db.insert(ContactDBHelper.TABLE_NAME_CONTACT, null, cv);
+//		} else {
+//			Log.d(TAG, "insertContact: " + info.toString());
+//		}
+
 	}
 
 	public void deleteContactById(int id) {
@@ -64,10 +70,10 @@ public class ContactDBUtils {
 				info.setRemark(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_REMARK)));
 			}
 			ContactDetailDBUtils detail = ContactDetailDBUtils.getInstance(mContext);
-			info.setEmail(detail.queryContactByContactId(id, DetailItem.GROUP_EMAIL));
-			info.setPhone(detail.queryContactByContactId(id, DetailItem.GROUP_PHONE));
-			info.setWechat(detail.queryContactByContactId(id, DetailItem.GROUP_WECHAT));
-			info.setOther(detail.queryContactByContactId(id, DetailItem.GROUP_OTHER));
+			info.setEmail(detail.queryDetailByContactId(id, DetailItem.GROUP_EMAIL));
+			info.setPhone(detail.queryDetailByContactId(id, DetailItem.GROUP_PHONE));
+			info.setWechat(detail.queryDetailByContactId(id, DetailItem.GROUP_WECHAT));
+			info.setOther(detail.queryDetailByContactId(id, DetailItem.GROUP_OTHER));
 			return info;
 		} catch (Exception e) {
 			e.printStackTrace();

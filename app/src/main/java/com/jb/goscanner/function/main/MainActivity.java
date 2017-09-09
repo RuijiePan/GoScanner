@@ -1,6 +1,5 @@
 package com.jb.goscanner.function.main;
 
-
 import android.os.Bundle;
 
 import com.jb.goscanner.R;
