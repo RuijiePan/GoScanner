@@ -1,4 +1,4 @@
-package com.jb.goscanner.function.main.view;
+package com.jb.goscanner.function.widget;
 
 import android.content.Context;
 import android.support.annotation.Nullable;

@@ -6,7 +6,7 @@ import java.io.Serializable;
  * Created by liuyue on 2017/9/3.
  */
 
-public class DetailItem implements Serializable{
+public class DetailItem implements Serializable {
     private String id; // 主键
     private String contactId; // 外键
     private String tag;

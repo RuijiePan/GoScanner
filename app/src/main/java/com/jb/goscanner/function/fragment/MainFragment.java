@@ -12,9 +12,10 @@ import android.widget.ImageView;
 import com.google.zxing.activity.CaptureActivity;
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.fragment.BaseFragment;
+import com.jb.goscanner.function.activity.ContactActivity;
 import com.jb.goscanner.function.activity.RecordDetailActivity;
 import com.jb.goscanner.function.bean.ContactInfo;
-import com.jb.goscanner.function.main.view.BottomTab;
+import com.jb.goscanner.function.widget.BottomTab;
 import com.jb.goscanner.util.log.Loger;
 
 /**
@@ -66,7 +67,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
         mBottomTab.setTabClickListener(new BottomTab.OnTabClickListener() {
             @Override
             public void onClickGenerate() {
-                Loger.w("ruijie", "click generate");
+
             }
 
             @Override
@@ -93,6 +94,9 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
             case R.id.main_text_content:
                 break;
             case R.id.main_other:
+                //测试入口
+                Intent intent = new Intent(mContext, ContactActivity.class);
+                startActivity(intent);
                 break;
             case R.id.main_top_person_icon:
                 break;

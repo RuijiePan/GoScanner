@@ -1,10 +1,12 @@
-package com.jb.goscanner.function.main;
+package com.jb.goscanner.function.activity;
 
 import android.os.Bundle;
 
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.fragment.BaseFragmentActivity;
 import com.jb.goscanner.base.fragment.BaseFragmentManager;
+import com.jb.goscanner.function.fragment.MainFragmentManager;
+import com.jb.goscanner.function.main.MainFragment;
 
 public class MainActivity extends BaseFragmentActivity {
 

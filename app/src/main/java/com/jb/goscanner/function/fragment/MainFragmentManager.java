@@ -1,4 +1,4 @@
-package com.jb.goscanner.function.main;
+package com.jb.goscanner.function.fragment;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
@@ -6,6 +6,7 @@ import android.support.v4.app.FragmentActivity;
 import com.jb.goscanner.base.fragment.BaseFragment;
 import com.jb.goscanner.base.fragment.BaseFragmentManager;
 import com.jb.goscanner.base.fragment.FragmentManagerHelper;
+import com.jb.goscanner.function.main.MainFragment;
 
 /**
  * Created by panruijie on 2017/9/2.
