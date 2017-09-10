@@ -54,6 +54,7 @@ public class ContactDBUtils {
 			cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
 			cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
 			db.insert(TABLE_NAME_CONTACT, null, cv);
+
 			Log.d(TAG, "insertContact: insert");
 		} else {
 			ContentValues cv = new ContentValues();
@@ -70,6 +71,9 @@ public class ContactDBUtils {
 	public void deleteContactById(int id) {
 		openDB();
 		String sql = "delete from " + TABLE_NAME_CONTACT + " where " + ContactDBHelper.CONTACT_ID + " = " + id;
+		db.execSQL(sql);
+
+		sql = "delete from " + ContactDetailDBHelper.TABLE_NAME_DETAIL + " where " + ContactDetailDBHelper.DETAIL_CONTACTID + " = " + id;
 		db.execSQL(sql);
 	}
 

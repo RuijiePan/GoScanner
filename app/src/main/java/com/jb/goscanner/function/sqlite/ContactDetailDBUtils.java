@@ -46,9 +46,9 @@ public class ContactDetailDBUtils {
 		db.insert(ContactDetailDBHelper.TABLE_NAME_DETAIL, null, cv);
 	}
 
-	public void deleteContactById(int id) {
+	public void deleteDetailByContactId(String id) {
 		openDB();
-		String sql = "delete from " + ContactDetailDBHelper.TABLE_NAME_DETAIL + " where " + ContactDetailDBHelper.DETAIL_ID + " = '" + id + "'";
+		String sql = "delete from " + ContactDetailDBHelper.TABLE_NAME_DETAIL + " where " + ContactDetailDBHelper.DETAIL_CONTACTID + " = '" + id + "'";
 		db.execSQL(sql);
 	}
 
