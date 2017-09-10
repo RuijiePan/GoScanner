@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.jb.goscanner.function.bean.ContactInfo;
 import com.jb.goscanner.function.bean.DetailItem;
@@ -45,12 +46,25 @@ public class ContactDBUtils {
 
 	public void insertContact(ContactInfo info) {
 		openDB();
-		ContentValues cv = new ContentValues();
-		cv.put(ContactDBHelper.CONTACT_ID, info.getId());
-		cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
-		cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
-		cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
-		db.insert(TABLE_NAME_CONTACT, null, cv);
+		ContactInfo existContact = queryContactById(info.getId());
+		if (existContact == null) {
+			ContentValues cv = new ContentValues();
+			cv.put(ContactDBHelper.CONTACT_ID, info.getId());
+			cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
+			cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
+			cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
+			db.insert(TABLE_NAME_CONTACT, null, cv);
+			Log.d(TAG, "insertContact: insert");
+		} else {
+			ContentValues cv = new ContentValues();
+			cv.put(ContactDBHelper.CONTACT_ID, info.getId());
+			cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
+			cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
+			cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
+			String where = ContactDBHelper.CONTACT_ID + "=" + info.getId();
+			db.update(TABLE_NAME_CONTACT, cv, where, null);
+			Log.d(TAG, "insertContact: update");
+		}
 	}
 
 	public void deleteContactById(int id) {
