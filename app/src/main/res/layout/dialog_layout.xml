@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="128dp"
+              android:layout_marginRight="56dp">
+    <TextView
+        android:id="@+id/new_contact_btn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginTop="8dp"
+        android:text="@string/new_contact"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:paddingLeft="16dp"
+        android:textSize="18sp"/>
+    
+    <TextView
+        android:id="@+id/update_contact_btn"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/update_contact"
+        android:paddingLeft="16dp"
+        android:gravity="center_vertical"
+        android:textColor="@color/black"
+        android:textSize="18sp"/>
+</LinearLayout>

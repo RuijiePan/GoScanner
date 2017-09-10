@@ -13,5 +13,9 @@
     <string name="paste">Paste</string>
     <string name="you_name">You name</string>
     <string name="generate">generate</string>
+    <string name="save_qr_code">Save QR Code</string>
+    <string name="share_qr_code">Share QR Code</string>
+    <string name="new_contact">New Contacat</string>
+    <string name="update_contact">Update Contact</string>
     <string name="contact">Contact</string>
 </resources>

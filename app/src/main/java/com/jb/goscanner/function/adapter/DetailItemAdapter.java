@@ -6,7 +6,6 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -36,6 +35,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
     private int mCurMode;
     private ClipboardManager mClipboardManager;
     private List<SwitchModeListener> mSwitchModeListeners = new ArrayList<>();
+    private View.OnClickListener mOnCreateBtnClickListener;
 
     private int TYPE_DETAIL = 1;
     private int TYPE_HEAD = 0;
@@ -46,11 +46,12 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         void onSwitchMode(int mode);
     }
 
-    public DetailItemAdapter(Context context, int mode)  {
+    public DetailItemAdapter(Context context, int mode, View.OnClickListener listener)  {
         mContext = context;
         mCurMode = mode;
         mData = new ArrayList<>();
         mClipboardManager = (ClipboardManager)mContext.getSystemService(Context.CLIPBOARD_SERVICE);
+        mOnCreateBtnClickListener = listener;
     }
 
     @Override
@@ -93,11 +94,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
             holder.removeValueWatcher();
             DetailItem item = mData.get(position);
             holder.mTagEditText.setText(item.getTag());
-            if (mCurMode == RecordDetailActivity.MODE_EDITABLE) {
-                holder.mValueEditText.setText(item.getValue());
-            } else {
-                holder.mValueUneditableText.setText(item.getValue());
-            }
+            holder.mValueEditText.setText(item.getValue());
 
             holder.mPasteBtn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -131,12 +128,6 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
 
                 @Override
                 public void onTextChanged(CharSequence s, int start, int before, int count) {
-                    /*if (holder.mTagEditText.getText().toString() == null || holder.mTagEditText.getText().toString().equals("")) {
-                        mData.get(position).setTag(holder.mTagEditText.getText().toString());
-                        holder.mTagEditText.setHint(mData.get(position).getGroup());
-                    } else {
-                        mData.get(position).setTag(holder.mTagEditText.getText().toString());
-                    }*/
                     mData.get(position).setTag(holder.mTagEditText.getText().toString());
                 }
 
@@ -150,13 +141,15 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
                 @Override
                 public void onSwitchMode(int mode) {
                     if (mode == RecordDetailActivity.MODE_EDITABLE) {
-                        holder.mValueEditText.setVisibility(View.VISIBLE);
-                        holder.mPasteBtn.setVisibility(View.VISIBLE);
-                        holder.mValueUneditableText.setVisibility(View.GONE);
+                        holder.mTagEditText.setFocusable(true);
+                        holder.mValueEditText.setFocusable(true);
+
+                        holder.mDeleteBtn.setVisibility(View.VISIBLE);
                     } else {
-                        holder.mValueEditText.setVisibility(View.GONE);
-                        holder.mPasteBtn.setVisibility(View.GONE);
-                        holder.mValueUneditableText.setVisibility(View.VISIBLE);
+                        holder.mTagEditText.setFocusable(false);
+                        holder.mValueEditText.setFocusable(false);
+
+                        holder.mDeleteBtn.setVisibility(View.GONE);
                     }
                 }
             };
@@ -177,13 +170,66 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
             });
         } else if (viewholder instanceof DetailHeadViewHolder) {
             DetailHeadViewHolder holder = (DetailHeadViewHolder)viewholder;
-            Log.d(TAG, "onBindViewHolder: " + position);
-            holder.mRemarkEditText.setOnClickListener(new View.OnClickListener() {
+            holder.setNameWatcher(new TextWatcher() {
                 @Override
-                public void onClick(View v) {
-                    Log.d(TAG, "onClick: ");
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mData.get(0).setTag(holder.mNameEditText.getText().toString());
                 }
             });
+            holder.setRemarkWatcher(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    mData.get(0).setGroup(holder.mRemarkEditText.getText().toString());
+                }
+            });
+            holder.mNamePasteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dealOnPaste(holder, "Name");
+                }
+            });
+            holder.mRemarkPasteBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dealOnPaste(holder, "Remark");
+                }
+            });
+            SwitchModeListener listener = new SwitchModeListener() {
+                @Override
+                public void onSwitchMode(int mode) {
+                    if (mode == RecordDetailActivity.MODE_EDITABLE) {
+                        holder.mNameEditText.setFocusable(true);
+                        holder.mRemarkEditText.setFocusable(true);
+                    } else {
+                        holder.mNameEditText.setFocusable(false);
+                        holder.mRemarkEditText.setFocusable(false);
+                    }
+                }
+            };
+            holder.setSwitchModeListener(listener);
+            mSwitchModeListeners.add(listener);
+            holder.mNameEditText.setText(mData.get(0).getTag());
+            holder.mRemarkEditText.setText(mData.get(0).getGroup());
         } else if (viewholder instanceof DetailGroupViewHolder) {
             DetailGroupViewHolder holder = (DetailGroupViewHolder)viewholder;
             holder.mGroupAddBtn.setOnClickListener(new View.OnClickListener() {
@@ -193,25 +239,25 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
                     item.setGroup(mData.get(position).getGroup());
                     item.setTag(mData.get(position).getGroup());
                     mData.add(position + 1, item);
-                    for (int i = 0; i < mData.size(); i++) {
-                        Log.d(TAG, "onClick: " + i + " = " + mData.get(i).toString());
-                    }
-                    Log.d(TAG, "onClick: ====================================================");
                     notifyDataSetChanged();
                 }
             });
             holder.mGroupText.setText(mData.get(position).getGroup());
+            SwitchModeListener listener = new SwitchModeListener() {
+                @Override
+                public void onSwitchMode(int mode) {
+                    if (mode == RecordDetailActivity.MODE_EDITABLE) {
+                        holder.mGroupAddBtn.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.mGroupAddBtn.setVisibility(View.GONE);
+                    }
+                }
+            };
+            holder.setSwitchModeListener(listener);
+            mSwitchModeListeners.add(listener);
         } else if (viewholder instanceof FooterViewHolder) {
             FooterViewHolder holder = (FooterViewHolder)viewholder;
-            holder.mCreateBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    /*saveContent();
-                    Bitmap bitmap = BitmapUtils.create2DCode(ContactInfo.toJson(mContactInfo));//根据内容生成二维码
-                    List<ContactInfo> retry = ContactDBUtils.getInstance(mContext).queryExistContact();
-                    Log.d(TAG, "onClick: query all" + retry.size());*/
-                }
-            });
+            holder.mCreateBtn.setOnClickListener(mOnCreateBtnClickListener);
         }
     }
 
@@ -224,8 +270,6 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         private ImageView mDeleteBtn;
         private Button mPasteBtn;
         private EditText mTagEditText;
-        private TextView mTagTextView;
-        private TextView mValueUneditableText;
         private EditText mValueEditText;
         private TextWatcher mTagWatcher;
         private TextWatcher mValueWatcher;
@@ -236,18 +280,13 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
             mDeleteBtn = (ImageView)itemView.findViewById(R.id.detail_delete_btn);
             mPasteBtn = (Button)itemView.findViewById(R.id.detail_paste_btn);
             mTagEditText = (EditText)itemView.findViewById(R.id.detail_tag_edittext);
-            mValueUneditableText = (TextView) itemView.findViewById(R.id.detail_uneditable_text);
             mValueEditText = (EditText) itemView.findViewById(R.id.detail_edit_text);
-            mTagTextView = (TextView)itemView.findViewById(R.id.detail_tag_textview);
 
             mTagEditText.setBackground(null);
             mValueEditText.setBackground(null);
             if (mCurMode == RecordDetailActivity.MODE_EDITABLE) { // 可编辑
                 mValueEditText.setVisibility(View.VISIBLE);
-                mValueUneditableText.setVisibility(View.GONE);
             } else { // 不可编辑
-                mValueUneditableText.setVisibility(View.VISIBLE);
-
                 mValueEditText.setVisibility(View.GONE);
             }
         }
@@ -283,6 +322,9 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         private EditText mRemarkEditText;
         private Button mNamePasteBtn;
         private Button mRemarkPasteBtn;
+        private TextWatcher mNameWatcher;
+        private TextWatcher mRemarkWatcher;
+        private SwitchModeListener mSwitchModeListener;
 
         public DetailHeadViewHolder(View itemView) {
             super(itemView);
@@ -295,16 +337,45 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
             mNameEditText.setBackground(null);
             mRemarkEditText.setBackground(null);
         }
+
+        public void removeNameWatcher() {
+            mNameEditText.removeTextChangedListener(mNameWatcher);
+            mNameWatcher = null;
+        }
+
+        public void setNameWatcher(TextWatcher nameWatcher) {
+            mNameWatcher = nameWatcher;
+            mNameEditText.addTextChangedListener(mNameWatcher);
+        }
+
+        public void removeRemarkWatcher() {
+            mRemarkEditText.removeTextChangedListener(mRemarkWatcher);
+            mRemarkWatcher = null;
+        }
+
+        public void setRemarkWatcher(TextWatcher remarkWatcher) {
+            mRemarkWatcher = remarkWatcher;
+            mRemarkEditText.addTextChangedListener(mRemarkWatcher);
+        }
+
+        public void setSwitchModeListener(SwitchModeListener switchModeListener) {
+            mSwitchModeListener = switchModeListener;
+        }
     }
 
     class DetailGroupViewHolder extends RecyclerView.ViewHolder{
         private ImageView mGroupAddBtn;
         private TextView mGroupText;
+        private SwitchModeListener mSwitchModeListener;
 
         public DetailGroupViewHolder(View itemView) {
             super(itemView);
             mGroupAddBtn = (ImageView)itemView.findViewById(R.id.group_add_btn);
             mGroupText = (TextView) itemView.findViewById(R.id.detail_group_textview);
+        }
+
+        public void setSwitchModeListener(SwitchModeListener switchModeListener) {
+            mSwitchModeListener = switchModeListener;
         }
     }
 
@@ -317,7 +388,7 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         }
     }
 
-    private void dealOnCopy(DetailItemViewHolder holder) {
+    /*private void dealOnCopy(DetailItemViewHolder holder) {
         String text;
         if (mCurMode == RecordDetailActivity.MODE_EDITABLE) {
             text = holder.mValueEditText.getText().toString();
@@ -326,14 +397,33 @@ public class DetailItemAdapter extends RecyclerView.Adapter {
         }
         ClipData clip = ClipData.newPlainText(DetailItemAdapter.class.getCanonicalName(), text);
         mClipboardManager.setPrimaryClip(clip);
-    }
+    }*/
 
     private void dealOnPaste(DetailItemViewHolder holder) {
+        if (mCurMode == RecordDetailActivity.MODE_UNEDITABLE)
+            return;
         if (mClipboardManager.hasPrimaryClip()) {
             ClipData clipData = mClipboardManager.getPrimaryClip();
             int index = holder.mValueEditText.getSelectionStart();
             Editable editable = holder.mValueEditText.getText();
             editable.insert(index, clipData.getItemAt(0).getText());
+        }
+    }
+
+    private void dealOnPaste(DetailHeadViewHolder holder, String tag) {
+        if (mCurMode == RecordDetailActivity.MODE_UNEDITABLE)
+            return;
+        if (mClipboardManager.hasPrimaryClip()) {
+            ClipData clipData = mClipboardManager.getPrimaryClip();
+            if (tag.equals("Name")) {
+                int index = holder.mNameEditText.getSelectionStart();
+                Editable editable = holder.mNameEditText.getText();
+                editable.insert(index, clipData.getItemAt(0).getText());
+            } else if (tag.equals("Remark")) {
+                int index = holder.mRemarkEditText.getSelectionStart();
+                Editable editable = holder.mRemarkEditText.getText();
+                editable.insert(index, clipData.getItemAt(0).getText());
+            }
         }
     }
 

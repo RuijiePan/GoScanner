@@ -12,5 +12,5 @@
             android:textColor="#FFFFFF"
             android:text="create"
 
-            android:background="@drawable/create_btn_shape"/>
+            android:background="@drawable/round_btn_shape"/>
 </LinearLayout>

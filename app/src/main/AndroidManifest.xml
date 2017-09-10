@@ -28,6 +28,9 @@
         <activity android:name=".function.activity.RecordDetailActivity">
         </activity>
 
+        <activity android:name=".function.activity.ShowQRCodeActivity">
+        </activity>
+
         <activity android:name=".function.activity.ContactActivity" />
     </application>
 

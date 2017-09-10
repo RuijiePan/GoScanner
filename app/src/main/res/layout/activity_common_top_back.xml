@@ -3,7 +3,8 @@
     android:id="@+id/top_layout"
     android:layout_width="match_parent"
     android:layout_height="56dp"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/activity_top_back"
@@ -26,29 +27,7 @@
         android:layout_gravity="center_vertical"
         android:gravity="center"
         android:text="Create"
-        android:textColor="@color/black"/>
-
-    <!--编辑icon-->
-    <ImageView
-        android:id="@+id/top_edit_btn"
-        android:src="@drawable/detail_edit_icon"
-        android:layout_toLeftOf="@+id/activiy_top_text"
-        android:layout_width="56dp"
-        android:layout_height="match_parent"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:scaleType="center"
-        android:visibility="gone"/>
-
-    <!--保存icon-->
-    <ImageView
-        android:id="@+id/top_save_btn"
-        android:src="@drawable/ic_created_save"
-        android:layout_toLeftOf="@+id/activiy_top_text"
-        android:layout_width="56dp"
-        android:layout_height="match_parent"
-        android:paddingRight="16dp"
-        android:paddingLeft="16dp"
-        android:scaleType="center"/>
-
+        android:textColor="@color/black"
+        android:paddingRight="56dp"
+        />
 </LinearLayout>

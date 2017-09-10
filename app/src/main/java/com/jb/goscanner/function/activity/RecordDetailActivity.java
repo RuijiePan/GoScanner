@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -84,7 +83,15 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         mDetailRecyclerView.setLayoutManager(layoutManager);
-        mDetailItemAdapter = new DetailItemAdapter(this, mCurMode);
+        mDetailItemAdapter = new DetailItemAdapter(this, mCurMode, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchMode();
+                Intent intent = new Intent(mContext, ShowQRCodeActivity.class);
+                intent.putExtra(ShowQRCodeActivity.EXTRA_CONTACTINFO, mContactInfo);
+                startActivity(intent);
+            }
+        });
         mDetailRecyclerView.setAdapter(mDetailItemAdapter);
         List items = mContactInfo.parseToDetailItem(mContactInfo);
         mDetailItemAdapter.setData(items);
@@ -94,25 +101,34 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
     public void onClick(View v) {
         int id = v.getId();
         if (id == R.id.top_save_btn) {
-            saveContent();
-            switchMode();
+            CustomDialog dialog = new CustomDialog(mContext, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switchMode();
+                }
+            }, new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    switchMode();
+                }
+            });
+            dialog.show();
         } else if (id == R.id.top_edit_btn) {
             switchMode();
         } else if (id == R.id.activity_top_back) {
             ActivityCompat.finishAfterTransition(RecordDetailActivity.this);
+        } else if (id == R.id.qrcode_create_btn) {
+            Intent intent = new Intent(mContext, ShowQRCodeActivity.class);
+            startActivity(intent);
         }
     }
 
     private void saveContent() {
         List<DetailItem> items = mDetailItemAdapter.getData();
-        /*for (DetailItem item : items) {
-
-        }*/
         String contactId = mContactInfo.getId();
         if (contactId == null) {
             contactId = System.currentTimeMillis() + "";
         }
-        Log.d(TAG, "saveContent: " + contactId);
         mContactInfo.setId(contactId);
         mContactInfo = ContactInfo.combineToContactInfo(items, contactId);
         mContactInfo.setId(contactId);
@@ -121,6 +137,8 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
             ContactDetailDBUtils.getInstance(mContext).insertDetail(items.get(i));
         }
     }
+
+    // 改变编辑状态同时保存联系人
     private void switchMode() {
         if (mCurMode == MODE_EDITABLE) {
             switchMode(MODE_UNEDITABLE);
@@ -131,12 +149,12 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
             mSaveBtn.setVisibility(View.VISIBLE);
             mEditBtn.setVisibility(View.GONE);
         }
+        saveContent();
     }
 
     private void switchMode(int mode) {
-//        mCurMode = mode;
-//        mDetailItemAdapter.setCurMode(mode);
-//        mDetailItemAdapter.setData(mContactInfo.parseToDetailItem(new ContactInfo()));
+        mCurMode = mode;
+        mDetailItemAdapter.setCurMode(mode);
     }
     /**
      * @param context

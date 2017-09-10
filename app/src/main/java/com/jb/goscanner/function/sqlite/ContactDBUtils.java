@@ -12,6 +12,8 @@ import com.jb.goscanner.util.log.Loger;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.jb.goscanner.function.sqlite.ContactDBHelper.TABLE_NAME_CONTACT;
+
 /**
  * Created by liuyue on 2017/9/3.
  */
@@ -48,12 +50,12 @@ public class ContactDBUtils {
 		cv.put(ContactDBHelper.CONTACT_NAME, info.getName());
 		cv.put(ContactDBHelper.CONTACT_IMG, info.getImgUrl());
 		cv.put(ContactDBHelper.CONTACT_REMARK, info.getRemark());
-		db.insert(ContactDBHelper.TABLE_NAME_CONTACT, null, cv);
+		db.insert(TABLE_NAME_CONTACT, null, cv);
 	}
 
 	public void deleteContactById(int id) {
 		openDB();
-		String sql = "delete from " + ContactDBHelper.TABLE_NAME_CONTACT + " where " + ContactDBHelper.CONTACT_ID + " = " + id;
+		String sql = "delete from " + TABLE_NAME_CONTACT + " where " + ContactDBHelper.CONTACT_ID + " = " + id;
 		db.execSQL(sql);
 	}
 
@@ -62,23 +64,23 @@ public class ContactDBUtils {
 		try {
 			openDB();
 
-			String sql = "select * from " + ContactDBHelper.TABLE_NAME_CONTACT +" where " + ContactDBHelper.CONTACT_ID +"='" + id+"'";
+			String sql = "select * from " + TABLE_NAME_CONTACT +" where " + ContactDBHelper.CONTACT_ID +"='" + id+"'";
 			cursor = db.rawQuery(sql, null);
-			ContactInfo info = new ContactInfo();
-			while (cursor.moveToNext()) {
+			if (cursor.moveToNext()) {
+				ContactInfo info = new ContactInfo();
+
 				info.setId(id);
 				info.setName(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_NAME)));
 				info.setImgUrl(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_IMG)));
 				info.setRemark(cursor.getString(cursor.getColumnIndex(ContactDBHelper.CONTACT_REMARK)));
-				break;
+
+				ContactDetailDBUtils detail = ContactDetailDBUtils.getInstance(mContext);
+				info.setEmail(detail.queryDetailByContactId(id, DetailItem.GROUP_EMAIL));
+				info.setPhone(detail.queryDetailByContactId(id, DetailItem.GROUP_PHONE));
+				info.setWechat(detail.queryDetailByContactId(id, DetailItem.GROUP_WECHAT));
+				info.setOther(detail.queryDetailByContactId(id, DetailItem.GROUP_OTHER));
+				return info;
 			}
-			ContactDetailDBUtils detail = ContactDetailDBUtils.getInstance(mContext);
-			info.setEmail(detail.queryDetailByContactId(id, DetailItem.GROUP_EMAIL));
-			info.setPhone(detail.queryDetailByContactId(id, DetailItem.GROUP_PHONE));
-			info.setWechat(detail.queryDetailByContactId(id, DetailItem.GROUP_WECHAT));
-			info.setOther(detail.queryDetailByContactId(id, DetailItem.GROUP_OTHER));
-			cursor.close();
-			return info;
 		} catch (Exception e) {
 			if (cursor != null) {
 				cursor.close();
@@ -93,7 +95,7 @@ public class ContactDBUtils {
 		try {
 			openDB();
 
-			String sql = "select * from " + ContactDBHelper.TABLE_NAME_CONTACT;
+			String sql = "select * from " + TABLE_NAME_CONTACT;
 			cursor = db.rawQuery(sql, null);
 			List<ContactInfo> contactInfoList = new ArrayList<>();
 			while (cursor.moveToNext()) {
@@ -120,7 +122,6 @@ public class ContactDBUtils {
 		}
 		return null;
 	}
-
 	private void openDB() {
 		if (db == null) {
 			try {

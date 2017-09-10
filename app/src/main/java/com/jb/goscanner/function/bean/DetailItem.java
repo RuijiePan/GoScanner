@@ -1,5 +1,9 @@
 package com.jb.goscanner.function.bean;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.Serializable;
 
 /**
@@ -15,7 +19,7 @@ public class DetailItem implements Serializable {
 
     public static final String GROUP_PHONE = "PHONE";
     public static final String GROUP_EMAIL = "EMAIL";
-    public static final String GROUP_WECHAT = "WECHATE";
+    public static final String GROUP_WECHAT = "WECHAT";
     public static final String GROUP_OTHER = "OTHER";
     public static final String GROUP_HEAD = "HEAD";
     public DetailItem() {
@@ -73,6 +77,47 @@ public class DetailItem implements Serializable {
         this.contactId = contactId;
     }
 
+    public String parseToJsonString() {
+        JSONObject jsonObject = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+
+        try {
+            JSONObject jsonDetail = new JSONObject();
+            jsonDetail.put("id", id);
+            jsonDetail.put("tag", tag);
+            jsonDetail.put("value", value);
+            jsonDetail.put("group", group);
+            jsonDetail.put("contactId", contactId);
+
+            jsonArray.put(jsonDetail);
+            jsonObject.put("detail", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return jsonObject.toString();
+
+    }
+
+    public static DetailItem parseToDetailItem(String jsonString) {
+        DetailItem item = null;
+        try {
+            item = new DetailItem();
+            JSONObject jsonObject = new JSONObject(jsonString);
+
+            item.id = jsonObject.getString("id");
+            item.tag = jsonObject.getString("tag");
+            item.value = jsonObject.getString("value");
+            item.group = jsonObject.getString("group");
+            item.contactId = jsonObject.getString("contactId");
+
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return item;
+    }
+
+
     @Override
     public String toString() {
         return "DetailItem{" +
@@ -80,5 +125,6 @@ public class DetailItem implements Serializable {
                 ", value='" + value + '\'' +
                 ", group='" + group + '\'' +
                 '}';
+
     }
 }

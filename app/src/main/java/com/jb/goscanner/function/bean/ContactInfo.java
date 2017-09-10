@@ -183,48 +183,43 @@ public class ContactInfo implements Serializable, Comparable<ContactInfo> {
         return info;
     }
 
-    public static String toJson(ContactInfo contact) {
+    public static String parseToString(ContactInfo contact) {
+        ArrayList<DetailItem> items = parseToDetailItem(contact);
+
         JSONObject jsonObject = new JSONObject();
         JSONArray jsonArray = new JSONArray();
 
         try {
             JSONObject jsonContact = new JSONObject();
-            jsonContact.put("name", contact.getName());
-            jsonContact.put("remark", contact.getRemark());
-            jsonContact.put("imgUrl", contact.getImgUrl());
-
-            JSONObject phone = new JSONObject();
-            for (int i = 0; i < contact.getPhone().size(); i++) {
-                phone.put(contact.getPhone().get(i).getTag(), contact.getPhone().get(i).getValue());
+            for (int i = 0; i < items.size(); i++) {
+                jsonContact.put("detail" + i, items.get(i).parseToJsonString());
             }
-            jsonContact.put("phone", phone);
-
-            JSONObject email = new JSONObject();
-            for (int i = 0; i < contact.getEmail().size(); i++) {
-                phone.put(contact.getEmail().get(i).getTag(), contact.getEmail().get(i).getValue());
-            }
-            jsonContact.put("email", email);
-
-            JSONObject wechat = new JSONObject();
-            for (int i = 0; i < contact.getWechat().size(); i++) {
-                phone.put(contact.getWechat().get(i).getTag(), contact.getWechat().get(i).getValue());
-            }
-            jsonContact.put("wechat", wechat);
-
-            JSONObject other = new JSONObject();
-            for (int i = 0; i < contact.getOther().size(); i++) {
-                phone.put(contact.getOther().get(i).getTag(), contact.getOther().get(i).getValue());
-            }
-            jsonContact.put("other", other);
             jsonArray.put(jsonContact);
             jsonObject.put("contact", jsonArray);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        Log.d(TAG, "toJson: " + jsonObject.toString());
         return jsonObject.toString();
     }
 
+    public static ContactInfo parseToContactInfo(String jsonString) {
+        try {
+            JSONObject jsonObject = new JSONObject(jsonString);
+            JSONArray jsonArray = jsonObject.getJSONArray("contact");
+
+            List<DetailItem> items = new ArrayList<>();
+
+            for (int i = 0; i < jsonArray.length(); i++) {
+                DetailItem item = DetailItem.parseToDetailItem((String)jsonArray.getJSONObject(i).get("detail" + i));
+                items.add(item);
+            }
+
+            return combineToContactInfo(items, items.get(0).getId());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public String toString() {
         return "ContactInfo{" +

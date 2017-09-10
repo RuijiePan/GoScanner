@@ -8,6 +8,12 @@
     <include android:id="@+id/top_layout"
         layout="@layout/activity_top_back" />
 
+   <!-- <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:background="@drawable/tab_shadow"
+        android:layout_below="@id/top_layout"/>-->
+
     <android.support.v7.widget.RecyclerView
         android:id="@+id/detail_recyclerview"
         android:layout_width="match_parent"
