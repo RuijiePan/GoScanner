@@ -1,4 +1,4 @@
-package com.jb.goscanner.function.main;
+package com.jb.goscanner.function.fragment;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,7 +16,6 @@ import com.jb.goscanner.function.activity.ContactActivity;
 import com.jb.goscanner.function.activity.RecordDetailActivity;
 import com.jb.goscanner.function.bean.ContactInfo;
 import com.jb.goscanner.function.widget.BottomTab;
-import com.jb.goscanner.util.log.Loger;
 
 /**
  * Created by panruijie on 2017/9/2.
@@ -78,7 +77,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener {
 
             @Override
             public void onClickCollection() {
-                Loger.w("ruijie", "click collection");
+                //Loger.w("ruijie", "click collection");
             }
         });
     }

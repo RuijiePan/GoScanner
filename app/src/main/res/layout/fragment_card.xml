@@ -13,6 +13,7 @@
 
         <ImageView
             android:id="@+id/card_person_img"
+            android:src="@drawable/pic_personal"
             android:layout_width="60dp"
             android:layout_height="60dp" />
 

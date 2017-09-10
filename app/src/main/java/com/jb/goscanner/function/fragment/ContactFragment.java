@@ -19,7 +19,6 @@ import com.jb.goscanner.function.adapter.ContactAdapter;
 import com.jb.goscanner.function.bean.ContactBean;
 import com.jb.goscanner.function.bean.ContactComparator;
 import com.jb.goscanner.function.bean.ContactInfo;
-import com.jb.goscanner.function.bean.DetailItem;
 import com.jb.goscanner.function.sqlite.ContactDBUtils;
 import com.jb.goscanner.function.widget.WaveSideBarView;
 
@@ -62,54 +61,6 @@ public class ContactFragment extends BaseFragment {
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mContext));
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setHasFixedSize(true);
-
-        for (int i = 0; i < 26; i++) {
-            ContactInfo info = new ContactInfo();
-            info.setId(i + "");
-            info.setImgUrl("www.baidu.com");
-            info.setName(String.valueOf((char) ('z' - i)) + "asdasd啊哈克哈可随机获得健康");
-            info.setRemark("Remark" + i);
-            DetailItem item = new DetailItem();
-            item.setId(i + "");
-            item.setContactId(i + "");
-            item.setGroup(DetailItem.GROUP_PHONE);
-            item.setTag(DetailItem.GROUP_PHONE);
-            item.setValue("18888888888");
-            info.setPhone(item);
-            ContactDBUtils.getInstance(GoApplication.getContext())
-                    .insertContact(info);
-        }
-
-        ContactInfo info = new ContactInfo();
-        info.setId(26 + "");
-        info.setImgUrl("www.baidu.com");
-        info.setName("ad啊哈克哈可随机获得健康");
-        info.setRemark("Remark" + 2423);
-        DetailItem item = new DetailItem();
-        item.setId(26 + "");
-        item.setContactId(26 + "");
-        item.setGroup(DetailItem.GROUP_PHONE);
-        item.setTag(DetailItem.GROUP_PHONE);
-        item.setValue("18888888888");
-        info.setPhone(item);
-        ContactDBUtils.getInstance(GoApplication.getContext())
-                .insertContact(info);
-
-
-        info = new ContactInfo();
-        info.setId(27 + "");
-        info.setImgUrl("www.baidu.com");
-        info.setName("asdfssd啊哈克哈可随机获得健康");
-        info.setRemark("Remark" + 2423);
-        item = new DetailItem();
-        item.setId(27 + "");
-        item.setContactId(27 + "");
-        item.setGroup(DetailItem.GROUP_PHONE);
-        item.setTag(DetailItem.GROUP_PHONE);
-        item.setValue("18888888888");
-        info.setPhone(item);
-        ContactDBUtils.getInstance(GoApplication.getContext())
-                .insertContact(info);
 
         Flowable.just(ContactDBUtils.getInstance(GoApplication.getContext()).queryExistContact())
                 .map(list -> {

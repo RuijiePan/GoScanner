@@ -34,6 +34,8 @@
         <activity android:name=".function.activity.ContactActivity" />
 
         <activity android:name=".function.activity.CardActivity" />
+
+        <receiver android:name=".function.activity.MainActivity$TakePictureBroadcastReceiver" />
     </application>
 
 </manifest>

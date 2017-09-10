@@ -6,6 +6,7 @@ import com.google.gson.Gson;
 import com.jb.goscanner.function.bean.CardInfo;
 import com.jb.goscanner.util.Base64Util;
 import com.jb.goscanner.util.BitmapUtil;
+import com.jb.goscanner.util.log.Loger;
 import com.lzy.okgo.OkGo;
 import com.lzy.okgo.callback.StringCallback;
 
@@ -45,10 +46,15 @@ public class CardInterface {
                             @Override
                             public void onSuccess(com.lzy.okgo.model.Response<String> response) {
                                 String result = response.body();
+                                Loger.w("ruijie", result);
                                 if (!TextUtils.isEmpty(result)) {
                                     CardInfo info = new Gson().fromJson(result, CardInfo.class);
                                     if (listener != null) {
-                                        listener.uploadSuccess(info.getResult());
+                                        if (info.getResult() != null) {
+                                            listener.uploadSuccess(info.getResult());
+                                        } else {
+                                            listener.uploadFailure("result is null");
+                                        }
                                     }
                                 }
                             }

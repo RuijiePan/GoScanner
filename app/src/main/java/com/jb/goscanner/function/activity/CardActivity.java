@@ -61,7 +61,7 @@ public class CardActivity extends BaseFragmentActivity {
 
         mSaveImg.setVisibility(View.INVISIBLE);
         mCenterText.setText(getString(R.string.card));
-        mPersonName.setText("666");
+        mPersonName.setText("Test User");
     }
 
     private void initData() {
