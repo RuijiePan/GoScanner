@@ -9,11 +9,27 @@
         android:id="@+id/card_top_layout"
         layout="@layout/activity_top_back" />
 
+    <TextView
+        android:id="@+id/card_my_name"
+        android:textSize="20dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="34dp"
+        android:layout_marginBottom="34dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <android.support.v4.view.ViewPager
         android:layout_gravity="center"
         android:id="@+id/card_viewpager"
         android:clipChildren="false"
-        android:layout_marginTop="88dp"
         android:layout_width="280dp"
-        android:layout_height="408dp"></android.support.v4.view.ViewPager>
+        android:layout_height="410dp"></android.support.v4.view.ViewPager>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/card_viewpager_index"
+        android:layout_width="10dp"
+        android:layout_height="10dp"
+        android:layout_marginTop="10dp"
+        android:clipChildren="false"
+        android:layout_gravity="center"></android.support.v4.view.ViewPager>
 </LinearLayout>

@@ -28,6 +28,7 @@
                 android:id="@+id/card_name"
                 android:textSize="16dp"
                 android:text="name"
+                android:lines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#000000" />
@@ -36,6 +37,7 @@
                 android:id="@+id/card_remarks"
                 android:textSize="16dp"
                 android:text="remark"
+                android:lines="1"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="#999999" />
