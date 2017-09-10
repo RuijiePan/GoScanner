@@ -133,6 +133,7 @@ public class RecordDetailActivity extends BaseActivity implements View.OnClickLi
         mContactInfo = ContactInfo.combineToContactInfo(items, contactId);
         mContactInfo.setId(contactId);
         ContactDBUtils.getInstance(mContext).insertContact(mContactInfo);
+        ContactDetailDBUtils.getInstance(mContext).deleteDetailByContactId(contactId);
         for (int i = 1; i < items.size(); i++) {
             ContactDetailDBUtils.getInstance(mContext).insertDetail(items.get(i));
         }
