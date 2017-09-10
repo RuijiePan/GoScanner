@@ -3,6 +3,7 @@ package com.jb.goscanner.network;
 import android.text.TextUtils;
 
 import com.google.gson.Gson;
+import com.jb.goscanner.base.GoApplication;
 import com.jb.goscanner.function.bean.CardInfo;
 import com.jb.goscanner.util.Base64Util;
 import com.jb.goscanner.util.BitmapUtil;
@@ -13,6 +14,7 @@ import com.lzy.okgo.callback.StringCallback;
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
+import top.zibin.luban.Luban;
 
 /**
  * Created by panruijie on 2017/9/3.
@@ -30,10 +32,9 @@ public class CardInterface {
             listener.uploadStart();
         }
         Flowable.just(imageUrl)
+                .map(s -> Luban.with(GoApplication.getContext()).load(s).get().get(0).getAbsolutePath())
                 //拿bitmap
                 .map(BitmapUtil::getBitmap)
-                //压缩到小于200kb
-                .map(BitmapUtil::compressImage)
                 //转灰度图
                 .map(BitmapUtil::toGray)
                 //base64编码

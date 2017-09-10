@@ -1,21 +1,23 @@
 package com.jb.goscanner.function.activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.Toast;
 
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.fragment.BaseFragmentActivity;
 import com.jb.goscanner.base.fragment.BaseFragmentManager;
 import com.jb.goscanner.function.bean.CardInfo;
+import com.jb.goscanner.function.bean.ContactInfo;
 import com.jb.goscanner.function.fragment.MainFragment;
 import com.jb.goscanner.function.fragment.MainFragmentManager;
 import com.jb.goscanner.network.CardInterface;
-import com.jb.goscanner.util.log.Loger;
 import com.tbruyelle.rxpermissions2.RxPermissions;
 
 public class MainActivity extends BaseFragmentActivity {
@@ -24,6 +26,7 @@ public class MainActivity extends BaseFragmentActivity {
     private MainFragmentManager mFragmentManager;
     private TakePictureBroadcastReceiver mBroadReceiver;
     private RxPermissions mRxPermissions;
+    private ProgressDialog mProgressdialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,23 +73,40 @@ public class MainActivity extends BaseFragmentActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             String path = intent.getStringExtra("path");
-            Loger.w("ruijie", "get path = " + path);
             new CardInterface().getCardInfo(path, new CardInterface.IUploadListener() {
                 @Override
                 public void uploadStart() {
-                    Loger.w("ruijie", "start upload");
+                    Intent takePictureIntent = new Intent();
+                    takePictureIntent.setAction("getInfoFailure");
+                    sendBroadcast(takePictureIntent);
                 }
 
                 @Override
                 public void uploadFailure(String error) {
-                    Loger.w("ruijie", "error : " + error);
+                    Intent takePictureIntent = new Intent();
+                    takePictureIntent.setAction("getInfoFailure");
+                    sendBroadcast(takePictureIntent);
+                    Toast.makeText(MainActivity.this, "识别名片失败", Toast.LENGTH_LONG).show();
                 }
 
                 @Override
                 public void uploadSuccess(CardInfo.ResultBean bean) {
-
+                    Intent takePictureIntent = new Intent();
+                    takePictureIntent.setAction("getInfoFailure");
+                    sendBroadcast(takePictureIntent);
+                    ContactInfo info = new ContactInfo();
+                    if (bean.getName() != null && bean.getName().size() > 0 && !TextUtils.isEmpty(bean.getName().get(0))) {
+                        info.setName(bean.getName().get(0));
+                    }
+                    if (bean.getTel() != null && bean.getTel().size() > 0 && !TextUtils.isEmpty(bean.getTel().get(0))) {
+                        info.setName(bean.getTel().get(0));
+                    }
+                    Intent intent = new Intent(MainActivity.this, RecordDetailActivity.class);
+                    intent.putExtra(RecordDetailActivity.EXTRA_CONTACT_INFO, info);
+                    startActivity(intent);
                 }
             });
         }
     }
+
 }
