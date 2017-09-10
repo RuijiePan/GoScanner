@@ -1,6 +1,7 @@
 package com.jb.goscanner.function.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.adapter.BaseAdapter;
@@ -30,7 +31,7 @@ public class ContactAdapter extends BaseAdapter<ContactInfo, BaseViewHolder> {
     }
 
     public int getFirstLetterPosition(String string) {
-        if (string.equals("☆")) {
+        if (TextUtils.isEmpty(string) || string.equals("☆")) {
             string = "0";
         }
 
