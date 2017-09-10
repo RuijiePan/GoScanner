@@ -7,11 +7,14 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_marginRight="16dp"
-        android:layout_marginLeft="16dp">
+        android:layout_marginLeft="16dp"
+        android:layout_gravity="center">
         <ImageView
             android:id="@+id/self_image"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/pic_personal"
+            android:layout_gravity="center"/>
     </LinearLayout>
 
     <LinearLayout
