@@ -32,7 +32,11 @@ public class ContactDBUtils {
 
 	public static ContactDBUtils getInstance(Context context) {
 		if (instance == null) {
-			instance = new ContactDBUtils(context);
+			synchronized (ContactDBUtils.class) {
+				if (instance == null) {
+					instance = new ContactDBUtils(context);
+				}
+			}
 		}
 		return instance;
 	}
@@ -54,11 +58,12 @@ public class ContactDBUtils {
 	}
 
 	public ContactInfo queryContactById(String id) {
+		Cursor cursor = null;
 		try {
 			openDB();
 
 			String sql = "select * from " + ContactDBHelper.TABLE_NAME_CONTACT +" where " + ContactDBHelper.CONTACT_ID +"='" + id+"'";
-			Cursor cursor = db.rawQuery(sql, null);
+			cursor = db.rawQuery(sql, null);
 			ContactInfo info = new ContactInfo();
 			while (cursor.moveToNext()) {
 				info.setId(id);
@@ -72,19 +77,24 @@ public class ContactDBUtils {
 			info.setPhone(detail.queryDetailByContactId(id, DetailItem.GROUP_PHONE));
 			info.setWechat(detail.queryDetailByContactId(id, DetailItem.GROUP_WECHAT));
 			info.setOther(detail.queryDetailByContactId(id, DetailItem.GROUP_OTHER));
+			cursor.close();
 			return info;
 		} catch (Exception e) {
+			if (cursor != null) {
+				cursor.close();
+			}
 			e.printStackTrace();
 		}
 		return null;
 	}
 
 	public List<ContactInfo> queryExistContact() {
+		Cursor cursor = null;
 		try {
 			openDB();
 
 			String sql = "select * from " + ContactDBHelper.TABLE_NAME_CONTACT;
-			Cursor cursor = db.rawQuery(sql, null);
+			cursor = db.rawQuery(sql, null);
 			List<ContactInfo> contactInfoList = new ArrayList<>();
 			while (cursor.moveToNext()) {
 				ContactInfo info = new ContactInfo();
@@ -100,13 +110,17 @@ public class ContactDBUtils {
 				info.setOther(detail.queryDetailByContactId(id, DetailItem.GROUP_OTHER));
 				contactInfoList.add(info);
 			}
-
+			cursor.close();
 			return contactInfoList;
 		} catch (Exception e) {
+			if (cursor != null) {
+				cursor.close();
+			}
 			e.printStackTrace();
 		}
 		return null;
 	}
+
 	private void openDB() {
 		if (db == null) {
 			try {

@@ -13,4 +13,5 @@
     <color name="edit_text_color">#cccccc</color>
     <color name="gray_line_color">#d8d8d8</color>
     <color name="activity_bg">#f8fafb</color>
+    <color name="contact_background_color">#f8fafb</color>
 </resources>

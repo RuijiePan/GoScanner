@@ -23,4 +23,12 @@
     <dimen name="main_card_padding_text">8dp</dimen>
     <dimen name="main_card_text_height">52dp</dimen>
     <dimen name="main_card_text_size">16dp</dimen>
+
+    <!--WaveSideBarView-->
+    <dimen name="textSize_sidebar">10sp</dimen>
+    <dimen name="wave_textSize_sidebar">32sp</dimen>
+    <dimen name="textSize_sidebar_choose">12sp</dimen>
+    <dimen name="textSize_sidebar_padding">20sp</dimen>
+    <dimen name="radius_sidebar">20dp</dimen>
+    <dimen name="ball_radius_sidebar">24dp</dimen>
 </resources>
