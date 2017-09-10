@@ -51,7 +51,12 @@ public class FirstLetterUtil {
     public static String getFirst(String sourceStr) {
         String result = getFirstLetter(sourceStr);
         if (!result.equals("")) {
-            return result.toUpperCase().substring(0, 1);
+            String finalResult = result.toUpperCase().substring(0, 1);
+            if (finalResult.charAt(0) < 'A' || finalResult.charAt(0) > 'Z') {
+                return "0";
+            } else {
+                return finalResult;
+            }
         } else {
             return "";
         }

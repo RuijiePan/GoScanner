@@ -1,6 +1,7 @@
 package com.jb.goscanner.function.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -13,11 +14,19 @@ import android.view.ViewGroup;
 import com.jb.goscanner.R;
 import com.jb.goscanner.base.GoApplication;
 import com.jb.goscanner.base.fragment.BaseFragment;
+import com.jb.goscanner.function.activity.CardActivity;
 import com.jb.goscanner.function.adapter.ContactAdapter;
+import com.jb.goscanner.function.bean.ContactBean;
+import com.jb.goscanner.function.bean.ContactComparator;
 import com.jb.goscanner.function.bean.ContactInfo;
 import com.jb.goscanner.function.bean.DetailItem;
 import com.jb.goscanner.function.sqlite.ContactDBUtils;
 import com.jb.goscanner.function.widget.WaveSideBarView;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import io.reactivex.Flowable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -58,7 +67,7 @@ public class ContactFragment extends BaseFragment {
             ContactInfo info = new ContactInfo();
             info.setId(i + "");
             info.setImgUrl("www.baidu.com");
-            info.setName(String.valueOf((char) (i + 'a')));
+            info.setName(String.valueOf((char) ('z' - i)) + "asdasd啊哈克哈可随机获得健康");
             info.setRemark("Remark" + i);
             DetailItem item = new DetailItem();
             item.setId(i + "");
@@ -71,12 +80,56 @@ public class ContactFragment extends BaseFragment {
                     .insertContact(info);
         }
 
+        ContactInfo info = new ContactInfo();
+        info.setId(26 + "");
+        info.setImgUrl("www.baidu.com");
+        info.setName("ad啊哈克哈可随机获得健康");
+        info.setRemark("Remark" + 2423);
+        DetailItem item = new DetailItem();
+        item.setId(26 + "");
+        item.setContactId(26 + "");
+        item.setGroup(DetailItem.GROUP_PHONE);
+        item.setTag(DetailItem.GROUP_PHONE);
+        item.setValue("18888888888");
+        info.setPhone(item);
+        ContactDBUtils.getInstance(GoApplication.getContext())
+                .insertContact(info);
+
+
+        info = new ContactInfo();
+        info.setId(27 + "");
+        info.setImgUrl("www.baidu.com");
+        info.setName("asdfssd啊哈克哈可随机获得健康");
+        info.setRemark("Remark" + 2423);
+        item = new DetailItem();
+        item.setId(27 + "");
+        item.setContactId(27 + "");
+        item.setGroup(DetailItem.GROUP_PHONE);
+        item.setTag(DetailItem.GROUP_PHONE);
+        item.setValue("18888888888");
+        info.setPhone(item);
+        ContactDBUtils.getInstance(GoApplication.getContext())
+                .insertContact(info);
+
         Flowable.just(ContactDBUtils.getInstance(GoApplication.getContext()).queryExistContact())
+                .map(list -> {
+                    List<ContactBean> contactList = new ArrayList<>();
+                    for (ContactInfo infoBean : list) {
+                        contactList.add(new ContactBean(infoBean));
+                    }
+                    Collections.sort(contactList, new ContactComparator<ContactBean>());
+                    return contactList;
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(list -> {
                     mAdapter = new ContactAdapter(mContext, list);
                     mRecyclerView.setAdapter(mAdapter);
+                    mAdapter.setOnItemClickListener(beanList -> {
+                        Intent intent = new Intent(mContext, CardActivity.class);
+                        intent.putExtra(CardActivity.EXTRA_CONTACT_LIST, (Serializable) beanList);
+                        startActivity(intent);
+                    });
                 }, Throwable::printStackTrace);
 
     }

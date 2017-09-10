@@ -1,8 +1,5 @@
 package com.jb.goscanner.function.bean;
 
-import android.support.annotation.NonNull;
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,7 +12,7 @@ import java.util.List;
  * Created by liuyue on 2017/9/3.
  */
 
-public class ContactInfo implements Serializable, Comparable<ContactInfo> {
+public class ContactInfo implements Serializable {
     private static final String TAG = "ContactInfo";
     private String id;
     private String name;
@@ -234,10 +231,6 @@ public class ContactInfo implements Serializable, Comparable<ContactInfo> {
                 '}';
     }
 
-    @Override
-    public int compareTo(@NonNull ContactInfo o) {
-        return this.name.compareTo(o.name);
-    }
 }
 
 

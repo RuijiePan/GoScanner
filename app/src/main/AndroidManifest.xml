@@ -32,6 +32,8 @@
         </activity>
 
         <activity android:name=".function.activity.ContactActivity" />
+
+        <activity android:name=".function.activity.CardActivity" />
     </application>
 
 </manifest>

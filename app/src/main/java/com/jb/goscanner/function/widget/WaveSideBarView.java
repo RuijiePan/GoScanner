@@ -270,7 +270,7 @@ public class WaveSideBarView extends View {
             case MotionEvent.ACTION_MOVE:
                 mCenterY = (int) y;
                 if (oldChoose != newChoose) {
-                    if (newChoose > 0 && newChoose < mLetters.size()) {
+                    if (newChoose >= 0 && newChoose < mLetters.size()) {
                         mChoose = newChoose;
                         if (mListener != null) {
                             mListener.onLetterChange(mLetters.get(newChoose));
